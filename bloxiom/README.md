@@ -1,6 +1,6 @@
 # Clone repo #
 Download the repo or use the link to clone the repo via the command line using the command: 
->`git clone [enter repo url]`
+>`git clone https://github.com/mshowman/capstoneBlockchain.git`
 
 # Navigate into the project directory #
 Navigate to the project directory (bloxiom), then run:
