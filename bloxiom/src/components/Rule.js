@@ -8,6 +8,8 @@ import FormControl from '@material-ui/core/FormControl';
 
 import TextField from '@material-ui/core/TextField';
 import { individualMockValues, groupMockValues } from '../constants/Groups';
+import { mockRuleVariablesForIndividuals } from '../constants/IndividualRuleVariables';
+import { mockRuleVariablesForGroups } from '../constants/GroupRuleVariables';
 
 const useStyles = makeStyles({
   root: {
@@ -34,34 +36,41 @@ const useStyles = makeStyles({
 const Rule = () => {
   const classes = useStyles();
 
-  const [selectedGroup, setSelectedGroup] = React.useState([]);
-  const [selectedInd, setSelectedInd] = React.useState([]);
+  const [selectedGroupInd, setSelectedGroupInd] = React.useState('');
+  const [selected, setSelected] = React.useState('');
+  const [selectedRule, setSelectedRule] = React.useState('');
 
-  const handleGroupChange = (event) => {
-    setSelectedGroup(event.target.value);
+  const handleGroupIndChange = (event) => {
+    setSelectedGroupInd(event.target.value);
   };
 
   const handleIndChange = (event) => {
-    setSelectedInd(event.target.value);
+    setSelected(event.target.value);
   };
+
+  const handleRuleChange = (event) => {
+    setSelectedRule(event.target.value);
+  };
+
+  const inputLabel = React.useRef(null);
 
   return (
     <div className={classes.root}>
       <div className={classes.container}>
         <FormControl variant="outlined">
-          <InputLabel className={classes.label} for='select-group'>
-                    Select the Group(s) this rule will apply to:
+          <InputLabel className={classes.label} ref={inputLabel} htmlFor="select-group-ind">
+                    Rule applies to
           </InputLabel>
           <Select
             className={classes.select}
-            value={selectedGroup}
-            onChange={handleGroupChange}
-            input={<Input id="select-group" />}
+            value={selectedGroupInd}
+            onChange={handleGroupIndChange}
+            input={<Input id="select-group-ind" />}
             inputProps={{
-              id: 'groupSelect',
+              id: 'groupIndSelect',
             }}
           >
-            {groupMockValues.map((group) => (
+            {['Group', 'Individual'].map((group) => (
               <MenuItem key={group} value={group}>
                 {group}
               </MenuItem>
@@ -69,26 +78,72 @@ const Rule = () => {
           </Select>
         </FormControl>
       </div>
+      {['Group', 'Individual'].includes(selectedGroupInd)
+      && (
       <div className={classes.container}>
-        <InputLabel className={classes.label} id="indSelect">
-                    Select the Individual(s) this rule will apply to:
-        </InputLabel>
-        <Select
-          className={classes.select}
-          value={selectedInd}
-          onChange={handleIndChange}
-          input={<Input id="select-ind" />}
-          inputProps={{
-            id: 'indSelect',
-          }}
-        >
-          {individualMockValues.map((group) => (
-            <MenuItem key={group} value={group}>
-              {group}
-            </MenuItem>
-          ))}
-        </Select>
+        <FormControl variant="outlined">
+          <InputLabel className={classes.label}>
+            {selectedGroupInd}
+          </InputLabel>
+          <Select
+            className={classes.select}
+            value={selected}
+            onChange={handleIndChange}
+            input={<Input id="select" />}
+            inputProps={{
+              id: 'select',
+            }}
+          >
+            {
+              selectedGroupInd === 'Group'
+                ? groupMockValues.map((group) => (
+                  <MenuItem key={group} value={group}>
+                    {group}
+                  </MenuItem>
+                ))
+                : individualMockValues.map((ind) => (
+                  <MenuItem key={ind} value={ind}>
+                    {ind}
+                  </MenuItem>
+                ))
+            }
+          </Select>
+        </FormControl>
       </div>
+      )}
+      { selected !== ''
+      && (
+      <div className={classes.container}>
+        <FormControl variant="outlined">
+          <InputLabel className={classes.label} ref={inputLabel} htmlFor="select-rule">
+            Rule
+          </InputLabel>
+          <Select
+            className={classes.select}
+            value={selectedRule}
+            onChange={handleRuleChange}
+            input={<Input id="select-rule" />}
+            inputProps={{
+              id: 'ruleSelect',
+            }}
+          >
+            {
+              selectedGroupInd === 'Group'
+                ? mockRuleVariablesForGroups.map((group) => (
+                  <MenuItem key={group} value={group}>
+                    {group}
+                  </MenuItem>
+                ))
+                : mockRuleVariablesForIndividuals.map((ind) => (
+                  <MenuItem key={ind} value={ind}>
+                    {ind}
+                  </MenuItem>
+                ))
+            }
+          </Select>
+        </FormControl>
+      </div>
+      )}
       <div className={classes.container}>
         <TextField
           id="standard-required"
