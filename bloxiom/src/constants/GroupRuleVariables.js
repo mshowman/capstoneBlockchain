@@ -1,6 +1,6 @@
 const mockRuleVariablesForGroups = [
   {
-    name: 'Group 1',
+    name: 'Entire Org',
     variables: [
       {
         displayText: 'Spend At One Time',
@@ -17,7 +17,7 @@ const mockRuleVariablesForGroups = [
     ],
   },
   {
-    name: 'Group 2',
+    name: 'Group 1',
     variables: [
       {
         displayText: 'Spend At One Time',
@@ -30,7 +30,7 @@ const mockRuleVariablesForGroups = [
     ],
   },
   {
-    name: 'Group 3',
+    name: 'Group 2',
     variables: [
       {
         displayText: 'Spend At One Time',
