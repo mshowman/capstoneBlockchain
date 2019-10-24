@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Select } from '@material-ui/core';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -8,8 +8,8 @@ import FormControl from '@material-ui/core/FormControl';
 
 import TextField from '@material-ui/core/TextField';
 import { individualMockValues, groupMockValues } from '../constants/Groups';
-import { mockRuleVariablesForIndividuals } from '../constants/IndividualRuleVariables';
-import { mockRuleVariablesForGroups } from '../constants/GroupRuleVariables';
+import mockRuleVariablesForIndividuals from '../constants/IndividualRuleVariables';
+import mockRuleVariablesForGroups from '../constants/GroupRuleVariables';
 
 const useStyles = makeStyles({
   root: {
@@ -36,35 +36,34 @@ const useStyles = makeStyles({
 const Rule = () => {
   const classes = useStyles();
 
-  const [selectedGroupInd, setSelectedGroupInd] = React.useState('');
-  const [selected, setSelected] = React.useState('');
-  const [selectedRule, setSelectedRule] = React.useState('');
+  const [selectedGroupInd, setSelectedGroupInd] = useState('');
+  const [selected, setSelected] = useState('');
+  const [selectedRule, setSelectedRule] = useState('');
+  const [availableVariables, setAvailableVariables] = useState('');
 
-  const handleGroupIndChange = (event) => {
-    setSelectedGroupInd(event.target.value);
+  const getRules = () => {
+    let varList;
+
+    if (selectedGroupInd === 'Group') {
+      varList = mockRuleVariablesForGroups.filter((person) => person.name === selected);
+    } else {
+      varList = mockRuleVariablesForIndividuals.filter((person) => person.name === selected);
+    }
+
+    setAvailableVariables(varList.variables);
   };
-
-  const handleIndChange = (event) => {
-    setSelected(event.target.value);
-  };
-
-  const handleRuleChange = (event) => {
-    setSelectedRule(event.target.value);
-  };
-
-  const inputLabel = React.useRef(null);
 
   return (
     <div className={classes.root}>
       <div className={classes.container}>
         <FormControl variant="outlined">
-          <InputLabel className={classes.label} ref={inputLabel} htmlFor="select-group-ind">
-                    Rule applies to
+          <InputLabel className={classes.label} htmlFor="select-group-ind">
+            Rule applies to
           </InputLabel>
           <Select
             className={classes.select}
             value={selectedGroupInd}
-            onChange={handleGroupIndChange}
+            onChange={(event) => setSelectedGroupInd(event.target.value)}
             input={<Input id="select-group-ind" />}
             inputProps={{
               id: 'groupIndSelect',
@@ -78,7 +77,7 @@ const Rule = () => {
           </Select>
         </FormControl>
       </div>
-      {['Group', 'Individual'].includes(selectedGroupInd)
+      {selectedGroupInd
       && (
       <div className={classes.container}>
         <FormControl variant="outlined">
@@ -88,62 +87,59 @@ const Rule = () => {
           <Select
             className={classes.select}
             value={selected}
-            onChange={handleIndChange}
+            onChange={(event) => { setSelected(event.target.value); getRules(); }}
             input={<Input id="select" />}
             inputProps={{
               id: 'select',
             }}
           >
             {
-              selectedGroupInd === 'Group'
-                ? groupMockValues.map((group) => (
-                  <MenuItem key={group} value={group}>
-                    {group}
-                  </MenuItem>
-                ))
-                : individualMockValues.map((ind) => (
-                  <MenuItem key={ind} value={ind}>
-                    {ind}
-                  </MenuItem>
-                ))
-            }
+                  selectedGroupInd === 'Group'
+                    ? groupMockValues.map((group) => (
+                      <MenuItem key={group} value={group}>
+                        {group}
+                      </MenuItem>
+                    ))
+                    : individualMockValues.map((ind) => (
+                      <MenuItem key={ind} value={ind}>
+                        {ind}
+                      </MenuItem>
+                    ))
+                }
           </Select>
         </FormControl>
       </div>
       )}
-      { selected !== ''
+      {availableVariables
       && (
       <div className={classes.container}>
         <FormControl variant="outlined">
-          <InputLabel className={classes.label} ref={inputLabel} htmlFor="select-rule">
-            Rule
+          <InputLabel className={classes.label} htmlFor="select-rule">
+                Rule
           </InputLabel>
           <Select
             className={classes.select}
             value={selectedRule}
-            onChange={handleRuleChange}
+            onChange={(event) => setSelectedRule(event.target.value)}
             input={<Input id="select-rule" />}
             inputProps={{
               id: 'ruleSelect',
             }}
           >
             {
-              selectedGroupInd === 'Group'
-                ? mockRuleVariablesForGroups.map((group) => (
-                  <MenuItem key={group} value={group}>
-                    {group}
-                  </MenuItem>
-                ))
-                : mockRuleVariablesForIndividuals.map((ind) => (
-                  <MenuItem key={ind} value={ind}>
-                    {ind}
-                  </MenuItem>
-                ))
-            }
+                  availableVariables.map((ind, i) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <MenuItem key={i} value={ind.name}>
+                      {ind.displayText}
+                    </MenuItem>
+                  ))
+                }
           </Select>
         </FormControl>
       </div>
       )}
+      {selectedRule
+      && (
       <div className={classes.container}>
         <TextField
           id="standard-required"
@@ -152,6 +148,7 @@ const Rule = () => {
           variant="outlined"
         />
       </div>
+      )}
     </div>
   );
 };
