@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Select } from '@material-ui/core';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import FormControl from '@material-ui/core/FormControl';
-
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import SaveIcon from '@material-ui/icons/Save';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+
 import { individualMockValues, groupMockValues } from '../constants/Groups';
 import mockRuleVariablesForIndividuals from '../constants/IndividualRuleVariables';
 import mockRuleVariablesForGroups from '../constants/GroupRuleVariables';
@@ -39,19 +42,34 @@ const Rule = () => {
   const [selectedGroupInd, setSelectedGroupInd] = useState('');
   const [selected, setSelected] = useState('');
   const [selectedRule, setSelectedRule] = useState('');
-  const [availableVariables, setAvailableVariables] = useState('');
+  const [availableVariables, setAvailableVariables] = useState([]);
+  const [condition, setCondition] = useState('');
+  const [validEntry, setValidEntry] = useState(false);
 
-  const getRules = () => {
-    let varList;
+  useEffect(() => {
+    setValidEntry(selectedGroupInd !== '' && selected !== '' && selectedRule !== '' && condition !== '');
+  }, [selectedGroupInd, selected, selectedRule, condition]);
 
-    if (selectedGroupInd === 'Group') {
-      varList = mockRuleVariablesForGroups.filter((person) => person.name === selected);
-    } else {
-      varList = mockRuleVariablesForIndividuals.filter((person) => person.name === selected);
-    }
+  useEffect(() => {
+    setSelected('');
+    setSelectedRule('');
+    setAvailableVariables([]);
+    setCondition('');
+  }, [selectedGroupInd]);
 
-    setAvailableVariables(varList.variables);
-  };
+  useEffect(() => {
+    const getRules = () => {
+      if (selected === '') return [];
+
+      const source = (selected.includes('Group') || selected.includes('Entire'))
+        ? mockRuleVariablesForGroups
+        : mockRuleVariablesForIndividuals;
+
+      return source.filter((person) => person.name === selected)[0].variables;
+    };
+
+    setAvailableVariables(getRules());
+  }, [selected]);
 
   return (
     <div className={classes.root}>
@@ -87,7 +105,7 @@ const Rule = () => {
           <Select
             className={classes.select}
             value={selected}
-            onChange={(event) => { setSelected(event.target.value); getRules(); }}
+            onChange={(event) => setSelected(event.target.value)}
             input={<Input id="select" />}
             inputProps={{
               id: 'select',
@@ -110,7 +128,7 @@ const Rule = () => {
         </FormControl>
       </div>
       )}
-      {availableVariables
+      {availableVariables.length > 0
       && (
       <div className={classes.container}>
         <FormControl variant="outlined">
@@ -146,9 +164,18 @@ const Rule = () => {
           label="Enter condition for rule:"
           defaultValue=" "
           variant="outlined"
+          onChange={(event) => setCondition(event.target.value)}
         />
       </div>
       )}
+      <IconButton
+        disabled={!validEntry}
+      >
+        <SaveIcon />
+      </IconButton>
+      <IconButton>
+        <DeleteForeverIcon />
+      </IconButton>
     </div>
   );
 };
