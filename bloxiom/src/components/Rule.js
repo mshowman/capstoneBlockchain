@@ -8,8 +8,10 @@ import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import SaveIcon from '@material-ui/icons/Save';
+import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
+import Snackbar from '@material-ui/core/Snackbar';
 import { individualMockValues, groupMockValues } from '../constants/Groups';
 import mockRuleVariablesForIndividuals from '../constants/IndividualRuleVariables';
 import mockRuleVariablesForGroups from '../constants/GroupRuleVariables';
@@ -34,6 +36,33 @@ const useStyles = makeStyles({
     padding: 10,
     width: 175,
   },
+  deleteButton: {
+    backgroundColor: 'rgba(255, 0, 0, 0.4)',
+    width: 50,
+    height: 50,
+    '&:hover':
+      {
+        backgroundColor: 'rgba(255, 0, 0, 0.6)',
+      },
+  },
+  editButton: {
+    backgroundColor: 'rgba(0, 255, 0, 0.4)',
+    width: 50,
+    height: 50,
+    '&:hover':
+      {
+        backgroundColor: 'rgba(0, 255, 0, 0.6)',
+      },
+  },
+  saveButton: {
+    backgroundColor: 'rgba(0, 0, 255, 0.4)',
+    width: 50,
+    height: 50,
+    '&:hover':
+      {
+        backgroundColor: 'rgba(0, 0, 255, 0.6)',
+      },
+  },
 });
 
 const Rule = () => {
@@ -45,6 +74,8 @@ const Rule = () => {
   const [availableVariables, setAvailableVariables] = useState([]);
   const [condition, setCondition] = useState('');
   const [validEntry, setValidEntry] = useState(false);
+  const [savedEntry, setSavedEntry] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setValidEntry(selectedGroupInd !== '' && selected !== '' && selectedRule !== '' && condition !== '');
@@ -55,7 +86,13 @@ const Rule = () => {
     setSelectedRule('');
     setAvailableVariables([]);
     setCondition('');
+    setSavedEntry(false);
+    setValidEntry(false);
   }, [selectedGroupInd]);
+
+  useEffect(() => {
+    if (savedEntry) setOpen(true);
+  }, [savedEntry]);
 
   useEffect(() => {
     const getRules = () => {
@@ -86,6 +123,7 @@ const Rule = () => {
             inputProps={{
               id: 'groupIndSelect',
             }}
+            disabled={savedEntry}
           >
             {['Group', 'Individual'].map((group) => (
               <MenuItem key={group} value={group}>
@@ -110,6 +148,7 @@ const Rule = () => {
             inputProps={{
               id: 'select',
             }}
+            disabled={savedEntry}
           >
             {
                   selectedGroupInd === 'Group'
@@ -143,6 +182,7 @@ const Rule = () => {
             inputProps={{
               id: 'ruleSelect',
             }}
+            disabled={savedEntry}
           >
             {
                   availableVariables.map((ind, i) => (
@@ -165,17 +205,33 @@ const Rule = () => {
           defaultValue=" "
           variant="outlined"
           onChange={(event) => setCondition(event.target.value)}
+          disabled={savedEntry}
         />
       </div>
       )}
-      <IconButton
-        disabled={!validEntry}
-      >
-        <SaveIcon />
-      </IconButton>
-      <IconButton>
-        <DeleteForeverIcon />
-      </IconButton>
+      <div className={classes.container}>
+        {savedEntry && (
+        <IconButton className={classes.editButton} onClick={() => setSavedEntry(false)}>
+          <EditIcon />
+        </IconButton>
+        )}
+        {validEntry && !savedEntry && (
+        <IconButton className={classes.saveButton} onClick={() => setSavedEntry(validEntry)}>
+          <SaveIcon />
+        </IconButton>
+        )}
+        <IconButton className={classes.deleteButton} onClick={() => setSelectedGroupInd('')} disabled={selectedGroupInd === ''}>
+          <DeleteForeverIcon />
+        </IconButton>
+      </div>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        key="save-message"
+        message={<span id="message-id">Saved!</span>}
+        autoHideDuration={1000}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
     </div>
   );
 };
