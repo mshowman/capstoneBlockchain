@@ -12,9 +12,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import Snackbar from '@material-ui/core/Snackbar';
-import { individualMockValues, groupMockValues } from '../constants/Groups';
-import mockRuleVariablesForIndividuals from '../constants/IndividualRuleVariables';
-import mockRuleVariablesForGroups from '../constants/GroupRuleVariables';
+import { individualMockValues, groupMockValues } from '../../constants/Groups';
+import mockRuleVariablesForIndividuals from '../../constants/IndividualRuleVariables';
+import mockRuleVariablesForGroups from '../../constants/GroupRuleVariables';
+import Dropdown from './Dropdown';
 
 const useStyles = makeStyles({
   root: {
@@ -25,6 +26,7 @@ const useStyles = makeStyles({
   select: {
     width: 175,
     fontSize: 14,
+    textAlign: 'center',
   },
   label: {
     paddingBottom: 10,
@@ -77,6 +79,22 @@ const Rule = () => {
   const [savedEntry, setSavedEntry] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const updateGroupInd = (updatedValue) => {
+    setSelectedGroupInd(updatedValue);
+  };
+
+  const updateSelected = (updatedValue) => {
+    setSelected(updatedValue);
+  };
+
+  const updateRule = (updatedValue) => {
+    setSelectedRule(updatedValue);
+  };
+  //
+  // const updateAvailableVariables = (updatedValue) => {
+  //   setAvailableVariables(updatedValue);
+  // };
+
   useEffect(() => {
     setValidEntry(selectedGroupInd !== '' && selected !== '' && selectedRule !== '' && condition !== '');
   }, [selectedGroupInd, selected, selectedRule, condition]);
@@ -111,65 +129,42 @@ const Rule = () => {
   return (
     <div className={classes.root}>
       <div className={classes.container}>
-        <FormControl variant="outlined">
-          <InputLabel className={classes.label} htmlFor="select-group-ind">
-            Rule applies to
-          </InputLabel>
-          <Select
-            className={classes.select}
-            value={selectedGroupInd}
-            onChange={(event) => setSelectedGroupInd(event.target.value)}
-            input={<Input id="select-group-ind" />}
-            inputProps={{
-              id: 'groupIndSelect',
-            }}
-            disabled={savedEntry}
-          >
-            {['Group', 'Individual'].map((group) => (
-              <MenuItem key={group} value={group}>
-                {group}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Dropdown
+          dropdownStyles={classes.select}
+          labelStyles={classes.label}
+          saveState={updateGroupInd}
+          content={['Individual', 'Group']}
+          selected={selectedGroupInd}
+          label="Rule is for"
+          disabled={savedEntry}
+        />
       </div>
       {selectedGroupInd
       && (
       <div className={classes.container}>
-        <FormControl variant="outlined">
-          <InputLabel className={classes.label}>
-            {selectedGroupInd}
-          </InputLabel>
-          <Select
-            className={classes.select}
-            value={selected}
-            onChange={(event) => setSelected(event.target.value)}
-            input={<Input id="select" />}
-            inputProps={{
-              id: 'select',
-            }}
-            disabled={savedEntry}
-          >
-            {
-                  selectedGroupInd === 'Group'
-                    ? groupMockValues.map((group) => (
-                      <MenuItem key={group} value={group}>
-                        {group}
-                      </MenuItem>
-                    ))
-                    : individualMockValues.map((ind) => (
-                      <MenuItem key={ind} value={ind}>
-                        {ind}
-                      </MenuItem>
-                    ))
-                }
-          </Select>
-        </FormControl>
+        <Dropdown
+          dropdownStyles={classes.select}
+          labelStyles={classes.label}
+          saveState={updateSelected}
+          content={selectedGroupInd === 'Group' ? groupMockValues : individualMockValues}
+          selected={selected}
+          label={selectedGroupInd}
+          disabled={savedEntry}
+        />
       </div>
       )}
       {availableVariables.length > 0
       && (
       <div className={classes.container}>
+        <Dropdown
+          dropdownStyles={classes.select}
+          labelStyles={classes.label}
+          saveState={updateRule}
+          content={availableVariables}
+          selected={selectedRule}
+          label="Rule"
+          disabled={savedEntry}
+        />
         <FormControl variant="outlined">
           <InputLabel className={classes.label} htmlFor="select-rule">
                 Rule
