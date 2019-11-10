@@ -5,12 +5,13 @@ import IconButton from '@material-ui/core/IconButton';
 import SaveIcon from '@material-ui/icons/Save';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-
 import Snackbar from '@material-ui/core/Snackbar';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+
 import Dropdown from './Dropdown';
 import mockRuleVariablesForGroups from '../../constants/GroupRuleVariables';
 import mockRuleVariablesForIndividuals from '../../constants/IndividualRuleVariables';
@@ -20,7 +21,8 @@ const useStyles = makeStyles({
   root: {
     margin: 20,
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
+    width: 200,
   },
   select: {
     width: 175,
@@ -31,9 +33,23 @@ const useStyles = makeStyles({
     paddingBottom: 10,
     fontSize: 14,
   },
+  textBox: {
+    paddingBottom: 10,
+    fontSize: 14,
+  },
+  textInputFontSize: {
+    fontSize: 14,
+  },
   container: {
     flexDirection: 'column',
     justifyContent: 'center',
+    padding: 10,
+    width: 175,
+  },
+  buttonGroup: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     padding: 10,
     width: 175,
   },
@@ -41,6 +57,7 @@ const useStyles = makeStyles({
     backgroundColor: 'rgba(255, 0, 0, 0.4)',
     width: 50,
     height: 50,
+    marginLeft: 10,
     '&:hover':
       {
         backgroundColor: 'rgba(255, 0, 0, 0.6)',
@@ -69,11 +86,15 @@ const useStyles = makeStyles({
 const Rule = () => {
   const classes = useStyles();
 
+  // hooks for each field
   const [selectedGroupInd, setSelectedGroupInd] = useState('');
   const [selected, setSelected] = useState('');
   const [selectedRule, setSelectedRule] = useState('');
   const [availableVariables, setAvailableVariables] = useState([]);
   const [condition, setCondition] = useState('');
+  const [selectedRequire, setSelectedRequire] = useState('');
+
+  // hooks for validation and toggling dialogs
   const [validEntry, setValidEntry] = useState(false);
   const [savedEntry, setSavedEntry] = useState(false);
   const [open, setOpen] = useState(false);
@@ -88,6 +109,7 @@ const Rule = () => {
       setSelectedRule('');
       setAvailableVariables([]);
       setCondition('');
+      setSelectedRequire('');
       setSavedEntry(false);
       setValidEntry(false);
       setOpenDeleteCheck(false);
@@ -99,6 +121,7 @@ const Rule = () => {
     setSelectedRule('');
     setAvailableVariables([]);
     setCondition('');
+    setSelectedRequire('');
     setSavedEntry(false);
     setValidEntry(false);
   };
@@ -106,13 +129,22 @@ const Rule = () => {
   const updateRule = (updatedValue) => {
     setSelectedRule(updatedValue);
     setCondition('');
+    setSelectedRequire('');
     setSavedEntry(false);
     setValidEntry(false);
   };
 
+  const updateRequire = (updatedValue) => {
+    setSelectedRequire(updatedValue);
+  };
+
   useEffect(() => {
-    setValidEntry(selectedGroupInd !== '' && selected !== '' && selectedRule !== '' && condition !== '');
-  }, [selectedGroupInd, selected, selectedRule, condition]);
+    setValidEntry(selectedGroupInd !== '' && selected !== '' && selectedRule !== '' && condition !== '' && selectedRequire !== '');
+  }, [selectedGroupInd, selected, selectedRule, condition, selectedRequire]);
+
+  useEffect(() => {
+    if (condition === '') setSelectedRequire('');
+  }, [condition]);
 
   useEffect(() => {
     if (savedEntry) setOpen(true);
@@ -133,7 +165,7 @@ const Rule = () => {
   }, [selected]);
 
   return (
-    <div className={classes.root}>
+    <Paper className={classes.root}>
       <div className={classes.container}>
         <Dropdown
           dropdownStyles={classes.select}
@@ -177,16 +209,35 @@ const Rule = () => {
       && (
       <div className={classes.container}>
         <TextField
-          id="standard-required"
-          label="Enter condition for rule:"
-          defaultValue=" "
+          className={classes.textBox}
+          label="Condition for rule:"
+          defaultValue=""
           variant="outlined"
+          InputProps={{
+            classes: {
+              input: classes.textInputFontSize,
+            },
+          }}
           onChange={(event) => setCondition(event.target.value)}
           disabled={savedEntry}
         />
       </div>
       )}
-      <div className={classes.container}>
+      {condition
+      && (
+        <div className={classes.container}>
+          <Dropdown
+            dropdownStyles={classes.select}
+            labelStyles={classes.label}
+            saveState={updateRequire}
+            content={['Sign off', 'Locking account', 'Decline', 'Accept']}
+            selected={selectedRequire}
+            label="Requires"
+            disabled={savedEntry}
+          />
+        </div>
+      )}
+      <div className={classes.buttonGroup}>
         {savedEntry && (
         <IconButton className={classes.editButton} onClick={() => setSavedEntry(false)}>
           <EditIcon />
@@ -197,7 +248,11 @@ const Rule = () => {
           <SaveIcon />
         </IconButton>
         )}
-        <IconButton className={classes.deleteButton} onClick={() => updateGroupInd('delete')} disabled={selectedGroupInd === ''}>
+        <IconButton
+          className={classes.deleteButton}
+          onClick={() => updateGroupInd('delete')}
+          disabled={selectedGroupInd === ''}
+        >
           <DeleteForeverIcon />
         </IconButton>
       </div>
@@ -223,7 +278,7 @@ const Rule = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Paper>
   );
 };
 

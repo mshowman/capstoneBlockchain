@@ -1,10 +1,9 @@
 import React from 'react';
-import Rule from './components/Rule';
+import RuleView from './views/RuleView';
 
 const App = () => (
   <div>
-    <h1>This is the placeholder for the Rules Page</h1>
-    <Rule />
+    <RuleView />
   </div>
 );
 
