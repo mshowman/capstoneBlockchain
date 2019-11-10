@@ -10,17 +10,14 @@ const Dropdown = ({
   content, selected, label, dropdownStyles, labelStyles, saveState, disabled,
 }) => (
   <FormControl variant="outlined">
-    <InputLabel className={labelStyles} htmlFor="select-group-ind">
+    <InputLabel className={labelStyles}>
       {label}
     </InputLabel>
     <Select
       className={dropdownStyles}
       value={selected}
       onChange={(event) => saveState(event.target.value)}
-      input={<Input id="select-group-ind" />}
-      inputProps={{
-        id: 'groupIndSelect',
-      }}
+      input={<Input />}
       disabled={disabled}
     >
       {content.map((group) => (
