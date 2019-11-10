@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Select } from '@material-ui/core';
-import Input from '@material-ui/core/Input';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import SaveIcon from '@material-ui/icons/Save';
@@ -12,10 +7,14 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import Snackbar from '@material-ui/core/Snackbar';
-import { individualMockValues, groupMockValues } from '../../constants/Groups';
-import mockRuleVariablesForIndividuals from '../../constants/IndividualRuleVariables';
-import mockRuleVariablesForGroups from '../../constants/GroupRuleVariables';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 import Dropdown from './Dropdown';
+import mockRuleVariablesForGroups from '../../constants/GroupRuleVariables';
+import mockRuleVariablesForIndividuals from '../../constants/IndividualRuleVariables';
+import { individualMockValues, groupMockValues } from '../../constants/Groups';
 
 const useStyles = makeStyles({
   root: {
@@ -78,35 +77,42 @@ const Rule = () => {
   const [validEntry, setValidEntry] = useState(false);
   const [savedEntry, setSavedEntry] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openDeleteCheck, setOpenDeleteCheck] = useState(false);
 
   const updateGroupInd = (updatedValue) => {
-    setSelectedGroupInd(updatedValue);
+    if (savedEntry && updatedValue !== '') {
+      setOpenDeleteCheck(true);
+    } else {
+      setSelectedGroupInd(updatedValue === 'delete' ? '' : updatedValue);
+      setSelected('');
+      setSelectedRule('');
+      setAvailableVariables([]);
+      setCondition('');
+      setSavedEntry(false);
+      setValidEntry(false);
+      setOpenDeleteCheck(false);
+    }
   };
 
   const updateSelected = (updatedValue) => {
     setSelected(updatedValue);
-  };
-
-  const updateRule = (updatedValue) => {
-    setSelectedRule(updatedValue);
-  };
-  //
-  // const updateAvailableVariables = (updatedValue) => {
-  //   setAvailableVariables(updatedValue);
-  // };
-
-  useEffect(() => {
-    setValidEntry(selectedGroupInd !== '' && selected !== '' && selectedRule !== '' && condition !== '');
-  }, [selectedGroupInd, selected, selectedRule, condition]);
-
-  useEffect(() => {
-    setSelected('');
     setSelectedRule('');
     setAvailableVariables([]);
     setCondition('');
     setSavedEntry(false);
     setValidEntry(false);
-  }, [selectedGroupInd]);
+  };
+
+  const updateRule = (updatedValue) => {
+    setSelectedRule(updatedValue);
+    setCondition('');
+    setSavedEntry(false);
+    setValidEntry(false);
+  };
+
+  useEffect(() => {
+    setValidEntry(selectedGroupInd !== '' && selected !== '' && selectedRule !== '' && condition !== '');
+  }, [selectedGroupInd, selected, selectedRule, condition]);
 
   useEffect(() => {
     if (savedEntry) setOpen(true);
@@ -160,35 +166,11 @@ const Rule = () => {
           dropdownStyles={classes.select}
           labelStyles={classes.label}
           saveState={updateRule}
-          content={availableVariables}
+          content={availableVariables.map((variable) => variable.displayText)}
           selected={selectedRule}
           label="Rule"
           disabled={savedEntry}
         />
-        <FormControl variant="outlined">
-          <InputLabel className={classes.label} htmlFor="select-rule">
-                Rule
-          </InputLabel>
-          <Select
-            className={classes.select}
-            value={selectedRule}
-            onChange={(event) => setSelectedRule(event.target.value)}
-            input={<Input id="select-rule" />}
-            inputProps={{
-              id: 'ruleSelect',
-            }}
-            disabled={savedEntry}
-          >
-            {
-                  availableVariables.map((ind, i) => (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <MenuItem key={i} value={ind.name}>
-                      {ind.displayText}
-                    </MenuItem>
-                  ))
-                }
-          </Select>
-        </FormControl>
       </div>
       )}
       {selectedRule
@@ -215,7 +197,7 @@ const Rule = () => {
           <SaveIcon />
         </IconButton>
         )}
-        <IconButton className={classes.deleteButton} onClick={() => setSelectedGroupInd('')} disabled={selectedGroupInd === ''}>
+        <IconButton className={classes.deleteButton} onClick={() => updateGroupInd('delete')} disabled={selectedGroupInd === ''}>
           <DeleteForeverIcon />
         </IconButton>
       </div>
@@ -227,6 +209,20 @@ const Rule = () => {
         open={open}
         onClose={() => setOpen(false)}
       />
+      <Dialog
+        open={openDeleteCheck}
+        onClose={() => setOpenDeleteCheck(false)}
+      >
+        <DialogTitle>Delete this rule?</DialogTitle>
+        <DialogActions>
+          <Button onClick={() => setOpenDeleteCheck(false)} color="primary">
+            No
+          </Button>
+          <Button onClick={() => updateGroupInd('')} color="primary" autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
