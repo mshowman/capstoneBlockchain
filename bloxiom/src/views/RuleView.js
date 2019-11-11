@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   mainContent: {
     display: 'flex',
     flexDirection: 'row',
-    height: 'calc(100vh - 64px)',
+    height: 'calc(100% - 64px)',
     marginTop: 64,
     padding: 0,
   },
@@ -35,10 +35,15 @@ const useStyles = makeStyles({
     width: 120,
     backgroundColor: 'rgb(20, 175, 256, 0.5)',
     padding: 10,
+    position: 'fixed',
+    top: 0,
+    bottom: 0,
+    marginTop: 64,
   },
   contentWindow: {
     width: 'calc(100% - 120px)',
     backgroundColor: 'rgb(20, 175, 256, 0.2)',
+    marginLeft: 140,
   },
   addRule: {
     display: 'flex',
@@ -56,12 +61,16 @@ const useStyles = makeStyles({
 
 const RuleView = () => {
   const classes = useStyles();
-  const [rules, setRules] = useState([1, 2, 1, 2]);
+  const [rules, setRules] = useState([1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2]);
   const [showDialog, setShowDialog] = useState(false);
 
   // eslint-disable-next-line no-unused-vars
-  function updateRules(rule) {
+  function addRule(rule) {
     setRules([...rules, rule]);
+  }
+
+  function newDialog(toggle) {
+    setShowDialog(toggle);
   }
 
   return (
@@ -89,9 +98,8 @@ const RuleView = () => {
             </Button>
           </div>
         </div>
-        <div>
-          <RuleDialog showDialog={showDialog} closeDialog={setShowDialog} />
-        </div>
+        { showDialog
+          && <RuleDialog showDialog closeDialog={newDialog} />}
       </div>
     </div>
   );
