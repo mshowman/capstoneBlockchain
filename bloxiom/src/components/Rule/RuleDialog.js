@@ -49,52 +49,47 @@ const useStyles = makeStyles({
   },
 });
 
-const RuleDialog = ({ showDialog, closeDialog }) => {
+const RuleDialog = ({ showDialog, closeDialog, info }) => {
   const classes = useStyles();
 
+  const {
+    groupOrIndividual, name, rule, cond, result,
+  } = info;
+
   // hooks for each field
-  const [selectedGroupInd, setSelectedGroupInd] = useState('Individual');
-  const [selected, setSelected] = useState('');
-  const [selectedRule, setSelectedRule] = useState('');
+  const [selectedGroupInd, setSelectedGroupInd] = useState(groupOrIndividual);
+  const [selected, setSelected] = useState(name);
+  const [selectedRule, setSelectedRule] = useState(rule);
   const [availableVariables, setAvailableVariables] = useState([]);
-  const [condition, setCondition] = useState('');
-  const [selectedRequire, setSelectedRequire] = useState('');
+  const [condition, setCondition] = useState(cond);
+  const [selectedRequire, setSelectedRequire] = useState(result);
 
   // hooks for validation and toggling dialogs
   const [validEntry, setValidEntry] = useState(false);
   const [savedEntry, setSavedEntry] = useState(showDialog);
   const [open, setOpen] = useState(false);
 
-  const updateGroupInd = (updatedValue) => {
-    setSelectedGroupInd(updatedValue === 'delete' ? '' : updatedValue);
-    setSelected('');
-    setSelectedRule('');
-    setAvailableVariables([]);
-    setCondition('');
-    setSelectedRequire('');
+  // helper functions to pass down to child components in order to update state
+  const updateRequire = (updatedValue) => {
+    setSelectedRequire(updatedValue);
     setValidEntry(false);
-  };
-
-  const updateSelected = (updatedValue) => {
-    setSelected(updatedValue);
-    setSelectedRule('');
-    setAvailableVariables([]);
-    setCondition('');
-    setSelectedRequire('');
     setSavedEntry(false);
-    setValidEntry(false);
   };
 
   const updateRule = (updatedValue) => {
     setSelectedRule(updatedValue);
     setCondition('');
-    setSelectedRequire('');
-    setSavedEntry(false);
-    setValidEntry(false);
+    updateRequire('');
   };
 
-  const updateRequire = (updatedValue) => {
-    setSelectedRequire(updatedValue);
+  const updateSelected = (updatedValue) => {
+    setSelected(updatedValue);
+    updateRule('');
+  };
+
+  const updateGroupInd = (updatedValue) => {
+    setSelectedGroupInd(updatedValue === 'delete' ? '' : updatedValue);
+    updateSelected('');
   };
 
   useEffect(() => {
@@ -102,7 +97,7 @@ const RuleDialog = ({ showDialog, closeDialog }) => {
   }, [selectedGroupInd, selected, selectedRule, condition, selectedRequire]);
 
   useEffect(() => {
-    if (condition === '') setSelectedRequire('');
+    if (condition === '') updateRequire('');
   }, [condition]);
 
   useEffect(() => {
@@ -218,6 +213,23 @@ const RuleDialog = ({ showDialog, closeDialog }) => {
 RuleDialog.propTypes = {
   showDialog: PropTypes.bool.isRequired,
   closeDialog: PropTypes.func.isRequired,
+  info: PropTypes.shape({
+    groupOrIndividual: PropTypes.string,
+    name: PropTypes.string,
+    rule: PropTypes.string,
+    cond: PropTypes.string,
+    result: PropTypes.string,
+  }),
+};
+
+RuleDialog.defaultProps = {
+  info: {
+    groupOrIndividual: '',
+    name: '',
+    rule: '',
+    cond: '',
+    result: '',
+  },
 };
 
 export default RuleDialog;
