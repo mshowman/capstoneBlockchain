@@ -15,3 +15,16 @@ export const editRule = (index, rule) => ({
   index,
   rule,
 });
+
+export const validateCredentials = (username, password, privateKey) => ({
+  type: 'VALIDATE_CREDENTIALS',
+  username,
+  password,
+  privateKey,
+});
+
+export const ValidationStatuses = {
+  VALIDATING: 'VALIDATING',
+  VALIDATING_SUCCESS: 'VALIDATING_SUCCESS',
+  VALIDATING_ERROR: 'VALIDATING_ERROR',
+};
