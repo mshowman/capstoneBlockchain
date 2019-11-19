@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import Fab from '@material-ui/core/Fab';
+import { MuiThemeProvider, Paper } from 'material-ui';
+import Logo from './bloxiomLogo.png';
 
 const useStyles = makeStyles({
   root: {
@@ -19,56 +20,63 @@ const useStyles = makeStyles({
     fontSize: 14,
   },
   container: {
-    flexDirection: 'column',
-    justifyContent: 'center',
     padding: 10,
-    width: 175,
+    width: 500,
+    height: 500,
+  },
+  login: {
+    display: 'flex',
+    width: 300,
+    margin: '0 auto',
+    justifyContent: 'center',
+    flexDirection: 'column',
+  },
+  logo: {
+    width: 475,
+    display: 'flex',
+    margin: '0 auto',
+  },
+  fab: {
+    backgroundColor: 'rgb(78, 174, 248)',
+    color: 'white',
   },
 });
-
 const Rule = () => {
   const classes = useStyles();
 
-  const [selectedGroupInd, setSelectedGroupInd] = useState('');
-  const [selected, setSelected] = useState('');
-  const [selectedRule, setSelectedRule] = useState('');
-  const [availableVariables, setAvailableVariables] = useState([]);
-  const [condition, setCondition] = useState('');
-  const [validEntry, setValidEntry] = useState(false);
-  const [savedEntry, setSavedEntry] = useState(false);
-  const [open, setOpen] = useState(false);
-
-
   return (
     <div className={classes.root}>
-      <div className={classes.container} style={{margin: '0 auto'}}>
-        <div className={classes.login } >
-          <TextField
-            id="standard-required"
-            label="Username"
-            defaultValue=" "
-            variant="outlined"
-            onChange={(event) => setCondition(event.target.value)}
-            disabled={savedEntry}
-          />
+      <MuiThemeProvider>
+        <Paper className={classes.container} style={{ margin: '0 auto' }}>
+          <img className={classes.logo} src={Logo} alt="Bloxiom" />
           <br />
-          <br />
-          <TextField
-            id="standard-required"
-            label="Password"
-            defaultValue=" "
-            floatingLabelText="Username"
-            variant="outlined"
-            onChange={(event) => setCondition(event.target.value)}
-            disabled={savedEntry}
-          />
-          <br />
-          <br />
-          <Fab variant="extended" aria-label="like" className={classes.fab} color="primary" >
+          <div className={classes.loginBlock}>
+            <div className={classes.login}>
+              <TextField
+                id="standard-required"
+                label="Username"
+                defaultValue=" "
+                variant="outlined"
+                required="true"
+              />
+              <br />
+              <br />
+              <TextField
+                id="standard-required"
+                label="Password"
+                defaultValue=" "
+                variant="outlined"
+                required="true"
+              />
+              <br />
+              <br />
+              <Fab variant="extended" aria-label="like" className={classes.fab} color="white">
                         Login
-          </Fab>
-        </div>
-      </div>
+              </Fab>
+            </div>
+          </div>
+        </Paper>
+      </MuiThemeProvider>
     </div>
   );
 };
