@@ -10,6 +10,10 @@ const useStyles = makeStyles({
     margin: 20,
     display: 'flex',
     flexDirection: 'row',
+    // backgroundColor: 'rgb(78, 174, 248)',
+    height: '100vh',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   select: {
     width: 175,
@@ -22,7 +26,9 @@ const useStyles = makeStyles({
   container: {
     padding: 10,
     width: 500,
-    height: 500,
+    height: 'auto',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   login: {
     display: 'flex',
@@ -50,30 +56,28 @@ const Rule = () => {
         <Paper className={classes.container} style={{ margin: '0 auto' }}>
           <img className={classes.logo} src={Logo} alt="Bloxiom" />
           <br />
-          <div className={classes.loginBlock}>
-            <div className={classes.login}>
-              <TextField
-                id="standard-required"
-                label="Username"
-                defaultValue=" "
-                variant="outlined"
-                required="true"
-              />
-              <br />
-              <br />
-              <TextField
-                id="standard-required"
-                label="Password"
-                defaultValue=" "
-                variant="outlined"
-                required="true"
-              />
-              <br />
-              <br />
-              <Fab variant="extended" aria-label="like" className={classes.fab} color="white">
+          <div className={classes.login}>
+            <TextField
+              id="standard-required"
+              label="Username"
+              defaultValue=" "
+              variant="outlined"
+              required="true"
+            />
+            <br />
+            <br />
+            <TextField
+              id="standard-required"
+              label="Password"
+              defaultValue=" "
+              variant="outlined"
+              required="true"
+            />
+            <br />
+            <br />
+            <Fab variant="extended" aria-label="like" className={classes.fab} color="white">
                         Login
-              </Fab>
-            </div>
+            </Fab>
           </div>
         </Paper>
       </MuiThemeProvider>
