@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Fab from '@material-ui/core/Fab';
 import { MuiThemeProvider, Paper } from 'material-ui';
 import Logo from './bloxiomLogo.png';
+import Background from './shapes.jpg';
 
 const useStyles = makeStyles({
   root: {
@@ -13,6 +14,9 @@ const useStyles = makeStyles({
     height: '100vh',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundImage: `url(${Background})`,
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
   },
   select: {
     width: 175,
