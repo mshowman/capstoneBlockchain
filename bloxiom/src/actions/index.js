@@ -1,3 +1,4 @@
+// RULES ACTIONS
 export const rules = [];
 
 export const addRule = (rule) => ({
@@ -16,6 +17,7 @@ export const editRule = (index, rule) => ({
   rule,
 });
 
+// LOGIN ACTIONS
 export const validateCredentials = (username, password, privateKey) => ({
   type: 'VALIDATE_CREDENTIALS',
   username,
@@ -28,3 +30,16 @@ export const ValidationStatuses = {
   VALIDATING_SUCCESS: 'VALIDATING_SUCCESS',
   VALIDATING_ERROR: 'VALIDATING_ERROR',
 };
+
+// USER ACTIONS
+export const retrieveUser = (username, password, privateKey) => ({
+  type: 'GET_USER',
+  username,
+  password,
+  privateKey,
+});
+
+export const updateUser = (updatedInfo) => ({
+  type: 'UPDATE_USER_INFO',
+  updatedInfo,
+});
