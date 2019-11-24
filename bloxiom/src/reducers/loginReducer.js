@@ -1,7 +1,19 @@
 import { retrieveUser, validateCredentials, ValidationStatuses } from '../actions';
 
+const callValidator = (username, password, privateKey) => {
+  if (username && password && privateKey) {
+    return { status: 'OK', errors: null };
+  }
+  return { status: 'FAILED', errors: ValidationStatuses.VALIDATING_ERROR };
+};
+
 const loginReducer = (state = [], action) => {
   switch (action.type) {
+    case 'CALL_VALIDATOR':
+      return {
+        ...state,
+        response: callValidator(action.username, action.password, action.privateKey),
+      };
     case 'VALIDATE_CREDENTIALS':
       return {
         ...state,
