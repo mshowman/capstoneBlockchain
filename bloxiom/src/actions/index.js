@@ -1,5 +1,8 @@
 // RULES ACTIONS
-export const rules = [];
+export const getRules = (userId) => ({
+  type: 'GET_RULES_FOR_USER',
+  userId,
+});
 
 export const addRule = (rule) => ({
   type: 'ADD_RULE',
