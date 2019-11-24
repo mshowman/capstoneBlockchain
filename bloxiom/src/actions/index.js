@@ -19,7 +19,7 @@ export const editRule = (index, rule) => ({
 
 // LOGIN ACTIONS
 export const validateCredentials = (username, password, privateKey) => ({
-  type: 'VALIDATE_CREDENTIALS',
+  type: 'CALL_VALIDATOR',
   username,
   password,
   privateKey,
