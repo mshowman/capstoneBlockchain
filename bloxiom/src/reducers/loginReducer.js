@@ -1,4 +1,4 @@
-import { validateCredentials, ValidationStatuses } from '../actions';
+import { retrieveUser, validateCredentials, ValidationStatuses } from '../actions';
 
 const loginReducer = (state = [], action) => {
   switch (action.type) {
@@ -11,6 +11,16 @@ const loginReducer = (state = [], action) => {
       return {
         ...state,
         status: validateCredentials(state),
+      };
+    case ValidationStatuses.VALIDATING_SUCCESS:
+      return {
+        ...state,
+        status: retrieveUser(state),
+      };
+    case ValidationStatuses.VALIDATING_ERROR:
+      return {
+        ...state,
+        status: 'LOGIN FAILED',
       };
     default:
       return state;
