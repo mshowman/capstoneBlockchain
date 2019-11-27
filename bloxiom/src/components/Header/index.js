@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import AppBar from '@material-ui/core/AppBar/AppBar';
-import React from 'react';
+import PropTypes from "prop-types";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import AppBar from "@material-ui/core/AppBar/AppBar";
+import React from "react";
 
 const Header = ({ title, styles }) => (
   <AppBar position="fixed">
@@ -16,11 +16,11 @@ const Header = ({ title, styles }) => (
 
 Header.propTypes = {
   title: PropTypes.string.isRequired,
-  styles: PropTypes.string,
+  styles: PropTypes.string
 };
 
 Header.defaultProps = {
-  styles: '',
+  styles: ""
 };
 
 export default Header;

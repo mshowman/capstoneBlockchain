@@ -1,16 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-const SideNav = ({ styles }) => (
-  <div className={styles}>SideNav?</div>
-);
+const SideNav = ({ styles }) => <div className={styles}>SideNav?</div>;
 
 SideNav.propTypes = {
-  styles: PropTypes.string,
+  styles: PropTypes.string
 };
 
 SideNav.defaultProps = {
-  styles: '',
+  styles: ""
 };
 
 export default SideNav;
