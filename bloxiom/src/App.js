@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
+import { connect } from "react-redux";
 import VisibleRules from "./containers/Rule/VisibleRules";
 import Header from "./components/Header";
 import SideNav from "./components/SideNav";
@@ -29,11 +30,12 @@ const useStyles = makeStyles({
   }
 });
 
-const App = () => {
+// eslint-disable-next-line react/prop-types
+const App = ({ userFullName }) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Header title="Rules" styles={classes.title} />
+      <Header title={`${userFullName} - Rules`} styles={classes.title} />
       <div className={classes.mainContent}>
         <SideNav styles={classes.sideNav} />
         <VisibleRules />
@@ -42,4 +44,8 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = state => ({
+  userFullName: state.userReducer.user.userFullName
+});
+
+export default connect(mapStateToProps)(App);

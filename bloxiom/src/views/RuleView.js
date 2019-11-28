@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
-import SavedRule from "../components/Rule/SavedRule";
 import RuleDialog from "../components/Rule/RuleDialog";
+import SavedRuleView from "../containers/Rule/SavedRuleView";
 
 const useStyles = makeStyles({
   contentWindow: {
@@ -27,10 +27,9 @@ const useStyles = makeStyles({
   }
 });
 
-const RuleView = ({ getRules }) => {
+const RuleView = ({ rules }) => {
   const classes = useStyles();
   const [showDialog, setShowDialog] = useState(false);
-  const rules = getRules();
 
   function newDialog(toggle) {
     setShowDialog(toggle);
@@ -39,10 +38,10 @@ const RuleView = ({ getRules }) => {
   return (
     <>
       <div className={classes.contentWindow}>
-        {/* eslint-disable-next-line no-unused-vars,react/no-array-index-key */}
         {rules &&
           rules.length > 0 &&
-          rules.map((rule, i) => <SavedRule key={i} info={rule} />)}
+          // eslint-disable-next-line react/no-array-index-key
+          rules.map((rule, i) => <SavedRuleView key={i} id={i} info={rule} />)}
         <div className={classes.addRule}>
           <Button
             className={classes.addButton}
@@ -60,7 +59,7 @@ const RuleView = ({ getRules }) => {
 };
 
 RuleView.propTypes = {
-  getRules: PropTypes.func.isRequired
+  rules: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 export default RuleView;

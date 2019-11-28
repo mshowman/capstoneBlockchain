@@ -1,13 +1,22 @@
-import { updateUser } from '../actions';
+import { updateUser } from "../actions";
 
-const userReducer = (state = [], action) => {
+const initialState = {
+  user: {
+    id: 0,
+    role: "",
+    userFullName: "Test Account"
+  }
+};
+
+const userReducer = (state = initialState, action) => {
+  // eslint-disable-next-line default-case
   switch (action.type) {
-    case 'GET_USER':
+    case "GET_USER":
       return state;
-    case 'UPDATE_USER_INFO':
+    case "UPDATE_USER_INFO":
       return {
         ...state,
-        ...updateUser(action.updatedInfo),
+        ...updateUser(action.updatedInfo)
       };
     default:
       return state;
