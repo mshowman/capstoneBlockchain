@@ -12,8 +12,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-
-import RuleDialog from "./RuleDialog";
+import RuleDialogContainer from "../../containers/Rule/RuleDialogContainer";
 
 const useStyles = makeStyles({
   root: {
@@ -75,7 +74,7 @@ const SavedRule = ({ id, info, deleteRule }) => {
   return (
     <Paper className={classes.root}>
       <Typography className={classes.ruleText}>
-        {`If ${name} ${selectedRule.toLowerCase()} $${condition} or more ==> ${result.toLowerCase()}.`}
+        {`If ${name} spends $${condition} or more ${selectedRule.toUpperCase()} ==> ${result.toUpperCase()}.`}
       </Typography>
       <div className={classes.buttonGroup}>
         <IconButton
@@ -118,7 +117,12 @@ const SavedRule = ({ id, info, deleteRule }) => {
         </DialogActions>
       </Dialog>
       {openRuleDialog && (
-        <RuleDialog showDialog closeDialog={closeRuleDialog} info={info} />
+        <RuleDialogContainer
+          showDialog
+          closeDialog={closeRuleDialog}
+          info={info}
+          id={id}
+        />
       )}
     </Paper>
   );

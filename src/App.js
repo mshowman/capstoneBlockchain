@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { connect } from "react-redux";
-import VisibleRules from "./containers/Rule/VisibleRules";
+import VisibleRules from "./containers/Rule/RulesViewContainer";
 import Header from "./components/Header";
 import SideNav from "./components/SideNav";
 

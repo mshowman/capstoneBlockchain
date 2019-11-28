@@ -3,16 +3,16 @@ const mockRuleVariablesForIndividuals = [
     name: "Person 1",
     variables: [
       {
-        displayText: "Spend At One Time",
-        name: "spendAtOneTime"
+        displayText: "At One Time",
+        name: "AtOneTime"
       },
       {
-        displayText: "Spend Per Day",
-        name: "spendPerDay"
+        displayText: "Per Day",
+        name: "PerDay"
       },
       {
-        displayText: "Spend Per Month",
-        name: "spendPerMonth"
+        displayText: "Per Month",
+        name: "PerMonth"
       }
     ]
   },
@@ -20,12 +20,12 @@ const mockRuleVariablesForIndividuals = [
     name: "Person 2",
     variables: [
       {
-        displayText: "Spend At One Time",
-        name: "spendAtOneTime"
+        displayText: "At One Time",
+        name: "AtOneTime"
       },
       {
-        displayText: "Spend Per Day",
-        name: "spendPerDay"
+        displayText: "Per Day",
+        name: "PerDay"
       }
     ]
   },
@@ -33,16 +33,16 @@ const mockRuleVariablesForIndividuals = [
     name: "Person 3",
     variables: [
       {
-        displayText: "Spend At One Time",
-        name: "spendAtOneTime"
+        displayText: "At One Time",
+        name: "AtOneTime"
       },
       {
-        displayText: "Spend Per Day",
-        name: "spendPerDay"
+        displayText: "Per Day",
+        name: "PerDay"
       },
       {
-        displayText: "Spend Per Month",
-        name: "spendPerMonth"
+        displayText: "Per Month",
+        name: "PerMonth"
       }
     ]
   },
@@ -50,8 +50,8 @@ const mockRuleVariablesForIndividuals = [
     name: "Person N",
     variables: [
       {
-        displayText: "Spend Per Month",
-        name: "spendPerMonth"
+        displayText: "Per Month",
+        name: "PerMonth"
       }
     ]
   }
