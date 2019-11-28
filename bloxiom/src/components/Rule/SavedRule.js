@@ -60,7 +60,7 @@ const useStyles = makeStyles({
   }
 });
 
-const SavedRule = ({ info }) => {
+const SavedRule = ({ id, info, deleteRule }) => {
   const classes = useStyles();
   const [openDeleteCheck, setOpenDeleteCheck] = useState(false);
   const [open, setOpen] = useState(false);
@@ -75,7 +75,7 @@ const SavedRule = ({ info }) => {
   return (
     <Paper className={classes.root}>
       <Typography className={classes.ruleText}>
-        {`If ${name} ${selectedRule.toLowerCase()} $${condition} or more, ${result.toLowerCase()}.`}
+        {`If ${name} ${selectedRule.toLowerCase()} $${condition} or more ==> ${result.toLowerCase()}.`}
       </Typography>
       <div className={classes.buttonGroup}>
         <IconButton
@@ -106,7 +106,10 @@ const SavedRule = ({ info }) => {
             No
           </Button>
           <Button
-            onClick={() => setOpenDeleteCheck(false)}
+            onClick={() => {
+              deleteRule(id);
+              setOpenDeleteCheck(false);
+            }}
             color="primary"
             autoFocus
           >
@@ -127,7 +130,9 @@ SavedRule.propTypes = {
     selectedRule: PropTypes.string.isRequired,
     condition: PropTypes.string.isRequired,
     result: PropTypes.string.isRequired
-  }).isRequired
+  }).isRequired,
+  id: PropTypes.number.isRequired,
+  deleteRule: PropTypes.func.isRequired
 };
 
 export default SavedRule;
