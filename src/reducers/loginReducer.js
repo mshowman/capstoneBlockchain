@@ -12,11 +12,9 @@ const callValidator = (username, password, privateKey) => {
 };
 
 const initialState = {
-  login: {
-    username: "",
-    password: "",
-    privateKey: ""
-  }
+  username: "",
+  password: "",
+  privateKey: ""
 };
 
 const loginReducer = (state = initialState, action) => {
