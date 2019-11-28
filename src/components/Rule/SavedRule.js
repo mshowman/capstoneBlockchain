@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     justifyContent: "space-between"
   },
   ruleText: {
-    fontSize: 14,
+    fontSize: 18,
     padding: 10
   },
   buttonGroup: {

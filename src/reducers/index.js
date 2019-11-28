@@ -4,7 +4,7 @@ import loginReducer from "./loginReducer";
 import userReducer from "./userReducer";
 
 export default combineReducers({
-  ruleReducer,
-  loginReducer,
-  userReducer
+  rules: ruleReducer,
+  login: loginReducer,
+  user: userReducer
 });

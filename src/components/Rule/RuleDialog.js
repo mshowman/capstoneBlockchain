@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-
-// There is nothing wrong with this import, it is an issue with this package's dependency's export
-// noinspection ES6CheckImport
 import PropTypes from "prop-types";
 
 import { DialogContent } from "@material-ui/core";
@@ -49,7 +46,14 @@ const useStyles = makeStyles({
   }
 });
 
-const RuleDialog = ({ showDialog, closeDialog, info }) => {
+const RuleDialog = ({
+  showDialog,
+  closeDialog,
+  id,
+  info,
+  addRule,
+  editRule
+}) => {
   const classes = useStyles();
 
   const { groupOrIndividual, name, rule, cond, result } = info;
@@ -123,6 +127,14 @@ const RuleDialog = ({ showDialog, closeDialog, info }) => {
 
     setAvailableVariables(getRules());
   }, [selected]);
+
+  const getRuleInfo = () => ({
+    groupOrIndividual: selectedGroupInd,
+    name: selected,
+    selectedRule: selectedRule,
+    condition: condition,
+    result: selectedRequire
+  });
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
@@ -217,6 +229,7 @@ const RuleDialog = ({ showDialog, closeDialog, info }) => {
         </Button>
         <Button
           onClick={() => {
+            addRule(getRuleInfo());
             updateGroupInd("");
             closeDialog();
           }}
@@ -239,7 +252,10 @@ RuleDialog.propTypes = {
     rule: PropTypes.string,
     cond: PropTypes.string,
     result: PropTypes.string
-  })
+  }),
+  id: PropTypes.number,
+  addRule: PropTypes.func,
+  editRule: PropTypes.func
 };
 
 RuleDialog.defaultProps = {

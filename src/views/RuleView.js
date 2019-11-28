@@ -4,14 +4,15 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
-import RuleDialog from "../components/Rule/RuleDialog";
 import SavedRuleView from "../containers/Rule/SavedRuleView";
+import RuleDialogContainer from "../containers/Rule/RuleDialogContainer";
 
 const useStyles = makeStyles({
   contentWindow: {
     width: "calc(100% - 120px)",
     backgroundColor: "rgb(20, 175, 256, 0.2)",
-    marginLeft: 140
+    marginLeft: 140,
+    height: "100vh"
   },
   addRule: {
     display: "flex",
@@ -41,7 +42,9 @@ const RuleView = ({ rules }) => {
         {rules &&
           rules.length > 0 &&
           // eslint-disable-next-line react/no-array-index-key
-          rules.map((rule, i) => <SavedRuleView key={i} id={i} info={rule} />)}
+          rules.map((rule, i) => (
+            <SavedRuleView key={i} id={rule.id} info={rule} />
+          ))}
         <div className={classes.addRule}>
           <Button
             className={classes.addButton}
@@ -53,7 +56,7 @@ const RuleView = ({ rules }) => {
           </Button>
         </div>
       </div>
-      {showDialog && <RuleDialog showDialog closeDialog={newDialog} />}
+      {showDialog && <RuleDialogContainer showDialog closeDialog={newDialog} />}
     </>
   );
 };

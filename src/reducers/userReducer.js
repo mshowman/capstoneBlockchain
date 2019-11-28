@@ -1,11 +1,9 @@
 import { updateUser } from "../actions";
 
 const initialState = {
-  user: {
-    id: 0,
-    role: "",
-    userFullName: "Test Account"
-  }
+  id: 0,
+  role: "",
+  userFullName: "Test Account"
 };
 
 const userReducer = (state = initialState, action) => {

@@ -45,7 +45,7 @@ const App = ({ userFullName }) => {
 };
 
 const mapStateToProps = state => ({
-  userFullName: state.userReducer.user.userFullName
+  userFullName: state.user.userFullName
 });
 
 export default connect(mapStateToProps)(App);
