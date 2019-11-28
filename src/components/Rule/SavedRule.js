@@ -65,7 +65,7 @@ const SavedRule = ({ id, info, deleteRule }) => {
   const [open, setOpen] = useState(false);
   const [openRuleDialog, setOpenRuleDialog] = useState(false);
 
-  const { name, selectedRule, condition, result } = info;
+  const { name, selectedRule, operator, condition, result } = info;
 
   function closeRuleDialog() {
     setOpenRuleDialog(false);
@@ -74,7 +74,7 @@ const SavedRule = ({ id, info, deleteRule }) => {
   return (
     <Paper className={classes.root}>
       <Typography className={classes.ruleText}>
-        {`If ${name} spends $${condition} or more ${selectedRule.toUpperCase()} ==> ${result.toUpperCase()}.`}
+        {`If ${name} spends ${operator.toLowerCase()} $${condition} ${selectedRule.toUpperCase()} ==> ${result.toUpperCase()}.`}
       </Typography>
       <div className={classes.buttonGroup}>
         <IconButton

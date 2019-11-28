@@ -81,6 +81,7 @@ const RuleDialog = ({
   );
 
   const [selectedRule, setSelectedRule] = useState(info.selectedRule);
+  const [selectedOperator, setSelectedOperator] = useState(info.operator);
   const [condition, setCondition] = useState(info.condition);
   const [selectedRequire, setSelectedRequire] = useState(info.result);
 
@@ -112,6 +113,7 @@ const RuleDialog = ({
     groupOrIndividual: selectedGroupInd,
     name: selectedName,
     selectedRule: selectedRule,
+    operator: selectedOperator,
     condition: condition,
     result: selectedRequire
   });
@@ -154,6 +156,23 @@ const RuleDialog = ({
             selected={selectedRule}
             label="Rule"
             disabled={selectedName === ""}
+          />
+        </div>
+        <div className={classes.container}>
+          <Dropdown
+            dropdownStyles={classes.select}
+            labelStyles={classes.label}
+            saveState={setSelectedOperator}
+            content={[
+              "More Than",
+              "Less Than",
+              "More Than Or Equal To",
+              "Less Than Or Equal To",
+              "Exactly"
+            ]}
+            selected={selectedOperator}
+            label="Condition"
+            disabled={selectedRule === ""}
           />
         </div>
         <div className={classes.container}>
@@ -220,6 +239,7 @@ RuleDialog.propTypes = {
     groupOrIndividual: PropTypes.string,
     name: PropTypes.string,
     selectedRule: PropTypes.string,
+    operator: PropTypes.string,
     cond: PropTypes.string,
     result: PropTypes.string
   }),
@@ -233,6 +253,7 @@ RuleDialog.defaultProps = {
     groupOrIndividual: "",
     name: "",
     selectedRule: "",
+    operator: "",
     cond: "",
     result: ""
   },
