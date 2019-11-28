@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
-import SavedRuleView from "../containers/Rule/SavedRuleView";
+import SavedRuleView from "../containers/Rule/SavedRuleContainer";
 import RuleDialogContainer from "../containers/Rule/RuleDialogContainer";
 
 const useStyles = makeStyles({

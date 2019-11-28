@@ -1,5 +1,3 @@
-import { updateUser } from "../actions";
-
 const initialState = {
   id: 0,
   role: "",
@@ -14,7 +12,7 @@ const userReducer = (state = initialState, action) => {
     case "UPDATE_USER_INFO":
       return {
         ...state,
-        ...updateUser(action.updatedInfo)
+        ...action.updatedInfo
       };
     default:
       return state;

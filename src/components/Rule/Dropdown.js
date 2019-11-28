@@ -24,9 +24,9 @@ const Dropdown = ({
       input={<Input />}
       disabled={disabled}
     >
-      {content.map(group => (
-        <MenuItem key={group} value={group}>
-          {group}
+      {content.map((text, i) => (
+        <MenuItem key={i} value={text}>
+          {text}
         </MenuItem>
       ))}
     </Select>
@@ -40,7 +40,11 @@ Dropdown.propTypes = {
   dropdownStyles: PropTypes.string.isRequired,
   labelStyles: PropTypes.string.isRequired,
   saveState: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool
+};
+
+Dropdown.defaultProps = {
+  disabled: false
 };
 
 export default Dropdown;

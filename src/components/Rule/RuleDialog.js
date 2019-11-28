@@ -18,8 +18,9 @@ const useStyles = makeStyles({
   root: {
     margin: 20,
     display: "flex",
-    flexDirection: "column",
-    width: 200
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: 400
   },
   select: {
     width: 175,
@@ -56,81 +57,60 @@ const RuleDialog = ({
 }) => {
   const classes = useStyles();
 
-  const { groupOrIndividual, name, rule, cond, result } = info;
+  const editingRule = id > -1;
 
-  // hooks for each field
-  const [selectedGroupInd, setSelectedGroupInd] = useState(groupOrIndividual);
-  const [selected, setSelected] = useState(name);
-  const [selectedRule, setSelectedRule] = useState(rule);
-  const [availableVariables, setAvailableVariables] = useState([]);
-  const [condition, setCondition] = useState(cond);
-  const [selectedRequire, setSelectedRequire] = useState(result);
+  const [selectedGroupInd, setSelectedGroupInd] = useState(
+    info.groupOrIndividual
+  );
+  const [selectedName, setSelectedName] = useState(info.name);
+
+  const getAvailableRules = () => {
+    const mockRules =
+      selectedGroupInd.includes("Group") || selectedGroupInd.includes("Entire")
+        ? mockRuleVariablesForGroups
+        : mockRuleVariablesForIndividuals;
+
+    if (selectedGroupInd === "" || selectedName === "") return [];
+    const values = mockRules.filter(r => r.name === selectedName);
+
+    return values[0].variables.map(v => v.displayText);
+  };
+
+  const [availableVariables, setAvailableVariables] = useState(
+    getAvailableRules()
+  );
+
+  const [selectedRule, setSelectedRule] = useState(info.selectedRule);
+  const [condition, setCondition] = useState(info.condition);
+  const [selectedRequire, setSelectedRequire] = useState(info.result);
 
   // hooks for validation and toggling dialogs
+  const [open, setOpen] = useState(showDialog);
   const [validEntry, setValidEntry] = useState(false);
-  const [savedEntry, setSavedEntry] = useState(showDialog);
-  const [open, setOpen] = useState(false);
 
-  // helper functions to pass down to child components in order to update state
-  const updateRequire = updatedValue => {
-    setSelectedRequire(updatedValue);
-    setValidEntry(false);
-    setSavedEntry(false);
-  };
-
-  const updateRule = updatedValue => {
-    setSelectedRule(updatedValue);
-    setCondition("");
-    updateRequire("");
-  };
-
-  const updateSelected = updatedValue => {
-    setSelected(updatedValue);
-    updateRule("");
-  };
-
-  const updateGroupInd = updatedValue => {
-    setSelectedGroupInd(updatedValue === "delete" ? "" : updatedValue);
-    updateSelected("");
-  };
+  useEffect(() => {
+    setAvailableVariables([...getAvailableRules()]);
+  }, [selectedName]);
 
   useEffect(() => {
     setValidEntry(
       selectedGroupInd !== "" &&
-        selected !== "" &&
+        selectedName !== "" &&
         selectedRule !== "" &&
         condition !== "" &&
         selectedRequire !== ""
     );
-  }, [selectedGroupInd, selected, selectedRule, condition, selectedRequire]);
-
-  useEffect(() => {
-    if (condition === "") updateRequire("");
-  }, [condition]);
-
-  useEffect(() => {
-    if (savedEntry) setOpen(true);
-    setSavedEntry(false);
-  }, [savedEntry]);
-
-  useEffect(() => {
-    const getRules = () => {
-      if (selected === "") return [];
-
-      const source =
-        selected.includes("Group") || selected.includes("Entire")
-          ? mockRuleVariablesForGroups
-          : mockRuleVariablesForIndividuals;
-
-      return source.filter(person => person.name === selected)[0].variables;
-    };
-
-    setAvailableVariables(getRules());
-  }, [selected]);
+  }, [
+    selectedGroupInd,
+    selectedName,
+    selectedRule,
+    condition,
+    selectedRequire
+  ]);
 
   const getRuleInfo = () => ({
     groupOrIndividual: selectedGroupInd,
-    name: selected,
+    name: selectedName,
     selectedRule: selectedRule,
     condition: condition,
     result: selectedRequire
@@ -138,84 +118,75 @@ const RuleDialog = ({
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
-      <DialogTitle>{savedEntry ? "Edit Rule" : "Add New Rule"}</DialogTitle>
+      <DialogTitle>{editingRule ? "Edit Rule" : "Add New Rule"}</DialogTitle>
       <DialogContent className={classes.root}>
         <div className={classes.container}>
           <Dropdown
             dropdownStyles={classes.select}
             labelStyles={classes.label}
-            saveState={updateGroupInd}
+            saveState={setSelectedGroupInd}
             content={["Individual", "Group"]}
             selected={selectedGroupInd}
             label="Rule is for"
-            disabled={savedEntry}
           />
         </div>
-        {selectedGroupInd && (
-          <div className={classes.container}>
-            <Dropdown
-              dropdownStyles={classes.select}
-              labelStyles={classes.label}
-              saveState={updateSelected}
-              content={
-                selectedGroupInd === "Group"
-                  ? groupMockValues
-                  : individualMockValues
+        <div className={classes.container}>
+          <Dropdown
+            dropdownStyles={classes.select}
+            labelStyles={classes.label}
+            saveState={setSelectedName}
+            content={
+              selectedGroupInd === "Group"
+                ? groupMockValues
+                : individualMockValues
+            }
+            selected={selectedName}
+            label={selectedGroupInd}
+            disabled={selectedGroupInd === ""}
+          />
+        </div>
+        <div className={classes.container}>
+          <Dropdown
+            dropdownStyles={classes.select}
+            labelStyles={classes.label}
+            saveState={setSelectedRule}
+            content={availableVariables}
+            selected={selectedRule}
+            label="Rule"
+            disabled={selectedName === ""}
+          />
+        </div>
+        <div className={classes.container}>
+          <TextField
+            className={classes.textBox}
+            label="Condition for Rule:"
+            defaultValue={condition}
+            variant="outlined"
+            InputProps={{
+              classes: {
+                input: classes.textInputFontSize
               }
-              selected={selected}
-              label={selectedGroupInd}
-              disabled={savedEntry}
-            />
-          </div>
-        )}
-        {availableVariables.length > 0 && (
-          <div className={classes.container}>
-            <Dropdown
-              dropdownStyles={classes.select}
-              labelStyles={classes.label}
-              saveState={updateRule}
-              content={availableVariables.map(variable => variable.displayText)}
-              selected={selectedRule}
-              label="Rule"
-              disabled={savedEntry}
-            />
-          </div>
-        )}
-        {selectedRule && (
-          <div className={classes.container}>
-            <TextField
-              className={classes.textBox}
-              label="Condition for rule:"
-              defaultValue=""
-              variant="outlined"
-              InputProps={{
-                classes: {
-                  input: classes.textInputFontSize
-                }
-              }}
-              onChange={event => setCondition(event.target.value)}
-              disabled={savedEntry}
-            />
-          </div>
-        )}
-        {condition && (
-          <div className={classes.container}>
-            <Dropdown
-              dropdownStyles={classes.select}
-              labelStyles={classes.label}
-              saveState={updateRequire}
-              content={[
-                "Sign off needed",
-                "Locking account",
-                "Decline",
-                "Accept"
-              ]}
-              selected={selectedRequire}
-              label="Results in"
-              disabled={savedEntry}
-            />
-          </div>
-        )}
+            }}
+            onChange={event => setCondition(event.target.value)}
+            disabled={selectedRule === ""}
+          />
+        </div>
+        <div className={classes.container}>
+          <Dropdown
+            dropdownStyles={classes.select}
+            labelStyles={classes.label}
+            saveState={setSelectedRequire}
+            content={[
+              "Sign off needed",
+              "Locking account",
+              "Decline",
+              "Accept"
+            ]}
+            selected={selectedRequire}
+            label="Results in"
+            disabled={condition === ""}
+          />
+        </div>
       </DialogContent>
       <DialogActions>
         <Button
@@ -229,8 +200,7 @@ const RuleDialog = ({
         </Button>
         <Button
           onClick={() => {
-            addRule(getRuleInfo());
-            updateGroupInd("");
+            editingRule ? editRule(id, getRuleInfo()) : addRule(getRuleInfo());
             closeDialog();
           }}
           color="primary"
@@ -249,7 +219,7 @@ RuleDialog.propTypes = {
   info: PropTypes.shape({
     groupOrIndividual: PropTypes.string,
     name: PropTypes.string,
-    rule: PropTypes.string,
+    selectedRule: PropTypes.string,
     cond: PropTypes.string,
     result: PropTypes.string
   }),
@@ -262,10 +232,11 @@ RuleDialog.defaultProps = {
   info: {
     groupOrIndividual: "",
     name: "",
-    rule: "",
+    selectedRule: "",
     cond: "",
     result: ""
-  }
+  },
+  id: -1
 };
 
 export default RuleDialog;
