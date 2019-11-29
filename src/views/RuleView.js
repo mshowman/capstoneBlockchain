@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     position: "fixed",
     bottom: 0,
     backgroundColor: "rgb(0, 0, 0, 0.2)",
-    width: "100%",
+    width: "calc(100% - 120px)",
     padding: 10
   },
   addButton: {

@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     padding: "15px 0"
   },
   signOut: {
-    bottom: 10,
+    bottom: 2,
     position: "absolute",
     width: "inherit"
   },
