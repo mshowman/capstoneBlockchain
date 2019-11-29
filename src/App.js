@@ -1,9 +1,12 @@
 import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import { connect } from "react-redux";
 import VisibleRules from "./containers/Rule/RulesViewContainer";
 import Header from "./components/Header";
 import SideNav from "./components/SideNav";
+import Login from "./views/Login";
+import ErrorView from "./views/ErrorView";
 
 const useStyles = makeStyles({
   root: {
@@ -27,6 +30,12 @@ const useStyles = makeStyles({
     top: 0,
     bottom: 0,
     marginTop: 64
+  },
+  contentWindow: {
+    width: "calc(100% - 120px)",
+    backgroundColor: "rgb(20, 175, 256, 0.2)",
+    marginLeft: 140,
+    height: "100vh"
   }
 });
 
@@ -34,13 +43,27 @@ const useStyles = makeStyles({
 const App = ({ userFullName }) => {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <Header title={`${userFullName} - Rules`} styles={classes.title} />
-      <div className={classes.mainContent}>
-        <SideNav styles={classes.sideNav} />
-        <VisibleRules />
+    <Router>
+      <div className={classes.root}>
+        <Header title={`${userFullName} - Rules`} styles={classes.title} />
+        <div className={classes.mainContent}>
+          <SideNav styles={classes.sideNav} />
+          <div className={classes.contentWindow}>
+            <Switch>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route exact path="/">
+                <VisibleRules />
+              </Route>
+              <Route>
+                <ErrorView />
+              </Route>
+            </Switch>
+          </div>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 };
 

@@ -8,19 +8,13 @@ import SavedRuleView from "../containers/Rule/SavedRuleContainer";
 import RuleDialogContainer from "../containers/Rule/RuleDialogContainer";
 
 const useStyles = makeStyles({
-  contentWindow: {
-    width: "calc(100% - 120px)",
-    backgroundColor: "rgb(20, 175, 256, 0.2)",
-    marginLeft: 140,
-    height: "100vh"
-  },
   addRule: {
     display: "flex",
     flexDirection: "row",
     position: "fixed",
     bottom: 0,
     backgroundColor: "rgb(0, 0, 0, 0.2)",
-    width: "inherit",
+    width: "100%",
     padding: 10
   },
   addButton: {
@@ -38,7 +32,7 @@ const RuleView = ({ rules }) => {
 
   return (
     <>
-      <div className={classes.contentWindow}>
+      <div>
         {rules &&
           rules.length > 0 &&
           // eslint-disable-next-line react/no-array-index-key
