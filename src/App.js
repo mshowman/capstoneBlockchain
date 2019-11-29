@@ -45,7 +45,7 @@ const App = ({ userFullName }) => {
   return (
     <Router>
       <div className={classes.root}>
-        <Header title={`${userFullName} - Rules`} styles={classes.title} />
+        <Header title={`Welcome ${userFullName}!`} styles={classes.title} />
         <div className={classes.mainContent}>
           <SideNav styles={classes.sideNav} />
           <div className={classes.contentWindow}>
@@ -53,7 +53,7 @@ const App = ({ userFullName }) => {
               <Route path="/login">
                 <Login />
               </Route>
-              <Route exact path="/">
+              <Route path="/rules">
                 <VisibleRules />
               </Route>
               <Route>
