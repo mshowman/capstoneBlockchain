@@ -4,9 +4,9 @@ import { makeStyles } from "@material-ui/core";
 import { connect } from "react-redux";
 import VisibleRules from "./containers/Rule/RulesViewContainer";
 import Header from "./components/Header";
-import SideNav from "./components/SideNav";
 import Login from "./views/Login";
 import ErrorView from "./views/ErrorView";
+import SideNavContainer from "./containers/SideNavContainer";
 
 const useStyles = makeStyles({
   root: {
@@ -47,7 +47,7 @@ const App = ({ userFullName }) => {
       <div className={classes.root}>
         <Header title={`Welcome ${userFullName}!`} styles={classes.title} />
         <div className={classes.mainContent}>
-          <SideNav styles={classes.sideNav} />
+          <SideNavContainer styles={classes.sideNav} />
           <div className={classes.contentWindow}>
             <Switch>
               <Route path="/login">

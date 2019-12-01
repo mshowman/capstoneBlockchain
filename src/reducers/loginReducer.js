@@ -14,7 +14,9 @@ const callValidator = (username, password, privateKey) => {
 const initialState = {
   username: "",
   password: "",
-  privateKey: ""
+  privateKey: "",
+  status: ValidationStatuses.SIGNING_OUT,
+  errors: null
 };
 
 const loginReducer = (state = initialState, action) => {
@@ -41,12 +43,17 @@ const loginReducer = (state = initialState, action) => {
     case ValidationStatuses.VALIDATING_SUCCESS:
       return {
         ...state,
-        status: retrieveUser(state)
+        status: ValidationStatuses.VALIDATING_SUCCESS
       };
     case ValidationStatuses.VALIDATING_ERROR:
       return {
         ...state,
         status: "LOGIN FAILED"
+      };
+    case ValidationStatuses.SIGNING_OUT:
+      return {
+        ...state,
+        ...initialState
       };
     default:
       return state;

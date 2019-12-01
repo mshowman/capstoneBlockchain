@@ -29,10 +29,15 @@ export const validateCredentials = (username, password, privateKey) => ({
   privateKey
 });
 
+export const toogleAuth = action => ({
+  type: action
+});
+
 export const ValidationStatuses = {
   VALIDATING: "VALIDATING",
   VALIDATING_SUCCESS: "VALIDATING_SUCCESS",
-  VALIDATING_ERROR: "VALIDATING_ERROR"
+  VALIDATING_ERROR: "VALIDATING_ERROR",
+  SIGNING_OUT: "SIGNING_OUT"
 };
 
 // USER ACTIONS
