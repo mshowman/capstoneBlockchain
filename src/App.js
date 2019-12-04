@@ -4,9 +4,11 @@ import { makeStyles } from "@material-ui/core";
 import { connect } from "react-redux";
 import VisibleRules from "./containers/Rule/RulesViewContainer";
 import Header from "./components/Header";
-import Login from "./views/Login";
+import Login from "./components/Header"
+import NewUser from "./components/NewUser";
 import ErrorView from "./views/ErrorView";
 import SideNavContainer from "./containers/SideNavContainer";
+
 
 const useStyles = makeStyles({
   root: {
@@ -52,6 +54,9 @@ const App = ({ userFullName }) => {
             <Switch>
               <Route path="/login">
                 <Login />
+              </Route>
+              <Route path="/newUser">
+                <NewUser />
               </Route>
               <Route path="/rules">
                 <VisibleRules />
