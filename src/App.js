@@ -3,11 +3,12 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import { connect } from "react-redux";
 import VisibleRules from "./containers/Rule/RulesViewContainer";
+import SideNavContainer from "./containers/SideNavContainer";
 import Header from "./components/Header";
 import Login from "./components/Header"
 import NewUser from "./components/NewUser";
+import AdminView from "./views/AdminView";
 import ErrorView from "./views/ErrorView";
-import SideNavContainer from "./containers/SideNavContainer";
 
 
 const useStyles = makeStyles({
@@ -60,6 +61,9 @@ const App = ({ userFullName }) => {
               </Route>
               <Route path="/rules">
                 <VisibleRules />
+              </Route>
+              <Route path="/admin">
+                <AdminView />
               </Route>
               <Route>
                 <ErrorView />
