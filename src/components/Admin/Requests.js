@@ -6,11 +6,23 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TableCell from "@material-ui/core/TableCell";
+import TableBody from "@material-ui/core/TableBody";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+
+const useStyles = makeStyles({
+    container: {
+        width: '50%',
+        marginRight: 20,
+    }
+});
 
 const Requests = ({requestsArray}) => {
-    return requestsArray
-        ? <TableContainer component={Paper}>
-            <Table size="medium" aria-label="a medium-sized table">
+    const classes = useStyles();
+
+    return requestsArray.length !== 0
+        ?
+        <TableContainer component={Paper} className={classes.container}>
+            <Table size="medium" aria-label="a medium-sized table" stickyHeader>
                 <TableHead>
                     <TableRow>
                         <TableCell>Requester</TableCell>
@@ -19,7 +31,9 @@ const Requests = ({requestsArray}) => {
                         <TableCell>Action</TableCell>
                     </TableRow>
                 </TableHead>
-                {requestsArray.map(r => <Request requestData={r}/>)}
+                <TableBody>
+                    {requestsArray.map(r => <Request requestData={r}/>)}
+                </TableBody>
             </Table>
         </TableContainer>
         : <div>
