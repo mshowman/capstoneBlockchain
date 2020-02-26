@@ -9,11 +9,12 @@ import Login from "./components/Header"
 import NewUser from "./components/NewUser";
 import AdminView from "./views/AdminView";
 import ErrorView from "./views/ErrorView";
+import {ValidationStatuses} from "./actions";
 
 
 const useStyles = makeStyles({
   root: {
-    width: "100%"
+    width: "100%",
   },
   title: {
     flexGrow: 1
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
     flexDirection: "row",
     height: "calc(100% - 64px)",
     marginTop: 64,
-    padding: 0
+    padding: 0,
   },
   sideNav: {
     width: 120,
@@ -38,12 +39,41 @@ const useStyles = makeStyles({
     width: "calc(100% - 120px)",
     backgroundColor: "rgb(20, 175, 256, 0.2)",
     marginLeft: 140,
-    height: "100vh"
+    height: "100vh",
   }
 });
 
+const AuthApp = () => (
+    <Switch>
+      <Route exact path="/">
+        <Login />
+      </Route>
+      <Route path="/login">
+        <Login />
+      </Route>
+      <Route path="/newUser">
+        <NewUser />
+      </Route>
+      <Route path="/rules">
+        <VisibleRules />
+      </Route>
+      <Route path="/admin">
+        <AdminView />
+      </Route>
+      <Route>
+        <ErrorView />
+      </Route>
+    </Switch>
+);
+
+const UnAuthApp = () => (
+    <div>
+      <h1>Log In to Enjoy</h1>
+    </div>
+);
+
 // eslint-disable-next-line react/prop-types
-const App = ({ userFullName }) => {
+const App = ({ userFullName, auth }) => {
   const classes = useStyles();
   return (
     <Router>
@@ -52,23 +82,7 @@ const App = ({ userFullName }) => {
         <div className={classes.mainContent}>
           <SideNavContainer styles={classes.sideNav} />
           <div className={classes.contentWindow}>
-            <Switch>
-              <Route path="/login">
-                <Login />
-              </Route>
-              <Route path="/newUser">
-                <NewUser />
-              </Route>
-              <Route path="/rules">
-                <VisibleRules />
-              </Route>
-              <Route path="/admin">
-                <AdminView />
-              </Route>
-              <Route>
-                <ErrorView />
-              </Route>
-            </Switch>
+            { auth === ValidationStatuses.SIGNING_OUT ? <UnAuthApp /> : <AuthApp /> }
           </div>
         </div>
       </div>
@@ -77,7 +91,8 @@ const App = ({ userFullName }) => {
 };
 
 const mapStateToProps = state => ({
-  userFullName: state.user.userFullName
+  userFullName: state.user.userFullName,
+  auth: state.login.status
 });
 
 export default connect(mapStateToProps)(App);
