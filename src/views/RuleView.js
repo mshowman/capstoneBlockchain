@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 
 import { makeStyles } from "@material-ui/core";
@@ -22,9 +22,15 @@ const useStyles = makeStyles({
   }
 });
 
-const RuleView = ({ rules }) => {
+const RuleView = ({ rules, toggleAuth }) => {
+  const userStates = ["USER_LOGIN", "ADMIN_LOGIN"];
+
   const classes = useStyles();
   const [showDialog, setShowDialog] = useState(false);
+
+  useEffect(() => {
+    toggleAuth(userStates[Math.floor(Math.random()*userStates.length)])
+  }, []);
 
   function newDialog(toggle) {
     setShowDialog(toggle);

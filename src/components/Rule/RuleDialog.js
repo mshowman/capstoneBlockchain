@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 
 import { DialogContent } from "@material-ui/core";
@@ -64,17 +64,17 @@ const RuleDialog = ({
   );
   const [selectedName, setSelectedName] = useState(info.name);
 
-  const getAvailableRules = () => {
+  const getAvailableRules = useCallback(() => {
     const mockRules =
-      selectedGroupInd.includes("Group") || selectedGroupInd.includes("Entire")
-        ? mockRuleVariablesForGroups
-        : mockRuleVariablesForIndividuals;
+        selectedGroupInd.includes("Group") || selectedGroupInd.includes("Entire")
+            ? mockRuleVariablesForGroups
+            : mockRuleVariablesForIndividuals;
 
     if (selectedGroupInd === "" || selectedName === "") return [];
     const values = mockRules.filter(r => r.name === selectedName);
 
     return values[0].variables.map(v => v.displayText);
-  };
+  }, [selectedGroupInd, selectedName]);
 
   const [availableVariables, setAvailableVariables] = useState(
     getAvailableRules()
@@ -91,7 +91,7 @@ const RuleDialog = ({
 
   useEffect(() => {
     setAvailableVariables([...getAvailableRules()]);
-  }, [selectedName]);
+  }, [selectedName, getAvailableRules]);
 
   useEffect(() => {
     setValidEntry(

@@ -1,5 +1,4 @@
 import {
-  retrieveUser,
   validateCredentials,
   ValidationStatuses
 } from "../actions";
@@ -41,6 +40,8 @@ const loginReducer = (state = initialState, action) => {
         status: validateCredentials(state)
       };
     case ValidationStatuses.VALIDATING_SUCCESS:
+    case "USER_LOGIN":
+    case "ADMIN_LOGIN":
       return {
         ...state,
         status: ValidationStatuses.VALIDATING_SUCCESS
