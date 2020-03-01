@@ -1,8 +1,20 @@
 const initialState = {
   id: 0,
   role: "",
-  userFullName: "Test Account"
+  userFullName: ""
 };
+
+const mockAuthAdminUser = {
+  id: 1,
+  role: "Admin",
+  userFullName: "Mock Administrator"
+};
+
+const mockAuthUser = {
+  id: 2,
+  role: "User",
+  userFullName: "Mock User"
+}
 
 const userReducer = (state = initialState, action) => {
   // eslint-disable-next-line default-case
@@ -14,8 +26,12 @@ const userReducer = (state = initialState, action) => {
         ...state,
         ...action.updatedInfo
       };
+    case "USER_LOGIN":
+      return {...state, ...mockAuthUser};
+    case "ADMIN_LOGIN":
+      return {...state, ...mockAuthAdminUser};
     default:
-      return state;
+      return initialState;
   }
 };
 

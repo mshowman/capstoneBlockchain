@@ -29,7 +29,7 @@ export const validateCredentials = (username, password, privateKey) => ({
   privateKey
 });
 
-export const toogleAuth = action => ({
+export const toggleAuth = action => ({
   type: action
 });
 

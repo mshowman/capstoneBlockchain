@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
@@ -7,7 +7,7 @@ import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import GavelIcon from "@material-ui/icons/Gavel";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
-import { validateCredentials, ValidationStatuses } from "../../actions";
+import { ValidationStatuses } from "../../actions";
 
 const useStyles = makeStyles({
   link: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   }
 });
 
-const SideNav = ({ styles, status, toggleAuth }) => {
+const SideNav = ({ styles, status, toggleAuth, getAuth }) => {
   const classes = useStyles();
   const routes = [
     { text: "Login", route: "rules", status: ValidationStatuses.SIGNING_OUT },
@@ -63,6 +63,8 @@ const SideNav = ({ styles, status, toggleAuth }) => {
         ]
       : [<VpnKeyIcon className={classes.icon} />];
 
+  const userStates = ["USER_LOGIN", "ADMIN_LOGIN"];
+
   return (
     <div className={styles}>
       {routes
@@ -76,11 +78,16 @@ const SideNav = ({ styles, status, toggleAuth }) => {
                 ? [classes.link, classes.signOut].join(" ")
                 : classes.link
             }
-            onClick={() =>
-              r.text === "Sign Out"
-                ? toggleAuth(ValidationStatuses.SIGNING_OUT)
-                : toggleAuth(ValidationStatuses.VALIDATING_SUCCESS)
-            }
+            onClick={() => {
+              switch (r.text) {
+                case "Sign Out":
+                  return toggleAuth(ValidationStatuses.SIGNING_OUT);
+                case "Login":
+                  return toggleAuth(userStates[Math.floor(Math.random()*userStates.length)]);
+                default:
+                  return {};
+              }
+            }}
           >
             {icons[i]}
             {r.text}
