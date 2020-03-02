@@ -1,14 +1,14 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import { connect } from "react-redux";
 import VisibleRules from "./containers/Rule/RulesViewContainer";
 import SideNavContainer from "./containers/SideNavContainer";
 import Header from "./components/Header";
-import Login from "./components/Login";
 import NewUser from "./components/NewUser";
 import AdminView from "./views/AdminView";
 import ErrorView from "./views/ErrorView";
+import LoginView from "./views/LoginView";
 import { ValidationStatuses } from "./actions";
 
 const useStyles = makeStyles({
@@ -50,10 +50,10 @@ const AuthApp = ({classes, userFullName}) => (
       <div className={classes.contentWindow}>
         <Switch>
           <Route exact path="/">
-            <Login />
+            <VisibleRules />
           </Route>
           <Route path="/login">
-            <Login />
+            <Redirect to="/" />
           </Route>
           <Route path="/newUser">
             <NewUser />
@@ -75,7 +75,7 @@ const AuthApp = ({classes, userFullName}) => (
 
 const UnAuthApp = () => (
   <div>
-    <Login />
+    <LoginView />
   </div>
 );
 

@@ -15,7 +15,11 @@ const initialState = {
   password: "",
   privateKey: "",
   status: ValidationStatuses.SIGNED_OUT,
-  errors: null
+  errors: null,
+  response: {
+    status: "FAILED",
+    errors: null
+  }
 };
 
 const loginReducer = (state = initialState, action) => {
