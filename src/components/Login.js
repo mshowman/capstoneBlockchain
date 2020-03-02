@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import TextField from '@material-ui/core/TextField';
-import Fab from '@material-ui/core/Fab';
+import Button from '@material-ui/core/Button';
 import { MuiThemeProvider, Paper } from '@material-ui/core';
 import Logo from '../assets/bloxiomLogo.png';
 import Background from '../assets/shapes.jpg';
@@ -50,16 +50,25 @@ const useStyles = makeStyles({
     backgroundColor: 'rgb(78, 174, 248)',
     color: 'white',
   },
+  textbox: {
+    margin: 15
+  }
 });
-const Rule = () => {
+const Login = ({status, toggleAuth, validate}) => {
   const classes = useStyles();
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+  const userStates = ["USER_LOGIN", "ADMIN_LOGIN"];
+
+  useEffect(() => {
+    if (status === "OK") toggleAuth(userStates[Math.floor(Math.random()*userStates.length)])
+  }, [status, toggleAuth, userStates])
 
   return (
     <div className={classes.root}>
       <MuiThemeProvider>
         <Paper className={classes.container} style={{ margin: '0 auto' }}>
           <img className={classes.logo} src={Logo} alt="Bloxiom" />
-          <br />
           <div className={classes.login}>
             <TextField
               id="standard-required"
@@ -67,21 +76,21 @@ const Rule = () => {
               defaultValue=" "
               variant="outlined"
               required="true"
+              className={classes.textbox}
+              onChange={e => setUser(e.target.value)}
             />
-            <br />
-            <br />
             <TextField
               id="standard-required"
               label="Password"
               defaultValue=" "
               variant="outlined"
               required="true"
+              className={classes.textbox}
+              onChange={e => setPassword(e.target.value)}
             />
-            <br />
-            <br />
-            <Fab variant="extended" aria-label="like" className={classes.fab} color="white">
+            <Button variant="extended" aria-label="like" className={classes.fab} color="white" onClick={() => validate(user, password, "secret")}>
                         Login
-            </Fab>
+            </Button>
           </div>
         </Paper>
       </MuiThemeProvider>
@@ -89,4 +98,4 @@ const Rule = () => {
   );
 };
 
-export default Rule;
+export default Login;
