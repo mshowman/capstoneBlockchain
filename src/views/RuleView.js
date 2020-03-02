@@ -30,7 +30,7 @@ const RuleView = ({ rules, toggleAuth }) => {
 
   useEffect(() => {
     toggleAuth(userStates[Math.floor(Math.random()*userStates.length)])
-  }, []);
+  }, [toggleAuth, userStates]);
 
   function newDialog(toggle) {
     setShowDialog(toggle);
