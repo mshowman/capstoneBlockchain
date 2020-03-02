@@ -82,7 +82,7 @@ const App = ({ userFullName, auth }) => {
         <div className={classes.mainContent}>
           <SideNavContainer styles={classes.sideNav} />
           <div className={classes.contentWindow}>
-            { auth === ValidationStatuses.SIGNING_OUT ? <UnAuthApp /> : <AuthApp /> }
+            { auth === ValidationStatuses.SIGNED_OUT ? <UnAuthApp /> : <AuthApp /> }
           </div>
         </div>
       </div>

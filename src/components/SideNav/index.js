@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 const SideNav = ({ styles, status, toggleAuth, getAuth }) => {
   const classes = useStyles();
   const routes = [
-    { text: "Login", route: "rules", status: ValidationStatuses.SIGNING_OUT },
+    { text: "Login", route: "rules", status: ValidationStatuses.SIGNED_OUT },
     {
       text: "Rules",
       route: "rules",
@@ -81,7 +81,7 @@ const SideNav = ({ styles, status, toggleAuth, getAuth }) => {
             onClick={() => {
               switch (r.text) {
                 case "Sign Out":
-                  return toggleAuth(ValidationStatuses.SIGNING_OUT);
+                  return toggleAuth(ValidationStatuses.SIGNED_OUT);
                 case "Login":
                   return toggleAuth(userStates[Math.floor(Math.random()*userStates.length)]);
                 default:
