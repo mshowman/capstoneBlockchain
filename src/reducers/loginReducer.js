@@ -14,7 +14,7 @@ const initialState = {
   username: "",
   password: "",
   privateKey: "",
-  status: ValidationStatuses.SIGNING_OUT,
+  status: ValidationStatuses.SIGNED_OUT,
   errors: null
 };
 
@@ -51,7 +51,7 @@ const loginReducer = (state = initialState, action) => {
         ...state,
         status: "LOGIN FAILED"
       };
-    case ValidationStatuses.SIGNING_OUT:
+    case ValidationStatuses.SIGNED_OUT:
       return {
         ...state,
         ...initialState

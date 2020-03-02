@@ -33,9 +33,9 @@ const AdminView = ({ auth }) => {
       <ManageGroups />
     </div>
   ) : (
-    <div className={classes.container}>
+    <h1 className={classes.container}>
       You are not authorized to view this page.
-    </div>
+    </h1>
   );
 };
 
