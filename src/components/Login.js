@@ -66,10 +66,6 @@ const Login = ({ status, role, errors, toggleAuth, clearErrors, validate }) => {
     if (status === "OK") toggleAuth(userStates[role]);
   }, [errors, status, role, toggleAuth, clearErrors, userStates]);
 
-  useEffect(() => {
-    clearErrors();
-  }, [user, password, clearErrors]);
-
   return (
     <div className={classes.root}>
       <MuiThemeProvider>
@@ -93,6 +89,10 @@ const Login = ({ status, role, errors, toggleAuth, clearErrors, validate }) => {
               required="true"
               className={classes.textbox}
               onChange={e => setUser(e.target.value)}
+              onClick={() => {
+                clearErrors();
+                setUser("");
+              }}
             />
             <TextField
               error={status === "FAILED"}
@@ -107,6 +107,10 @@ const Login = ({ status, role, errors, toggleAuth, clearErrors, validate }) => {
               className={classes.textbox}
               onChange={e => setPassword(e.target.value)}
               type="password"
+              onClick={() => {
+                clearErrors();
+                setPassword("");
+              }}
             />
             <Button
               variant="extended"
