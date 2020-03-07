@@ -1,13 +1,20 @@
-import {
-  validateCredentials,
-  ValidationStatuses
-} from "../actions";
+import { validateCredentials, ValidationStatuses } from "../actions";
 
 const callValidator = (username, password, privateKey) => {
-  if (username && password && privateKey) {
-    return { status: "OK", errors: null };
+  switch (username) {
+    case "user1":
+    case "admin1":
+      if (password === "password" && privateKey) {
+        return {
+          status: "OK",
+          errors: null,
+          role: username.includes("user") ? 0 : 1,
+        };
+      }
+      return { status: "FAILED", errors: "Bad username / password" };
+    default:
+      return { status: "FAILED", errors: ValidationStatuses.VALIDATING_ERROR };
   }
-  return { status: "FAILED", errors: ValidationStatuses.VALIDATING_ERROR };
 };
 
 const initialState = {
@@ -17,8 +24,9 @@ const initialState = {
   status: ValidationStatuses.SIGNED_OUT,
   errors: null,
   response: {
-    status: "FAILED",
-    errors: null
+    status: "",
+    errors: null,
+    role: -1
   }
 };
 
