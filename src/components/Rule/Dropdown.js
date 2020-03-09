@@ -15,7 +15,7 @@ const Dropdown = ({
   saveState,
   disabled
 }) => (
-  <FormControl variant="outlined">
+  <FormControl variant="outlined" className={dropdownStyles}>
     <InputLabel className={labelStyles}>{label}</InputLabel>
     <Select
       className={dropdownStyles}
