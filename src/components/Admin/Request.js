@@ -1,5 +1,5 @@
 import React from 'react';
-import {makeStyles, TableCell, TableRow} from "@material-ui/core";
+import {makeStyles, TableCell, TableRow, Button} from "@material-ui/core";
 
 const useStyles = makeStyles({
    buttons: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles({
    }
 });
 
-const Request = ({requestData}) => {
+const Request = ({requestData, index, updateRequestList}) => {
 
     if (!requestData) throw new Error('Missing key data');
 
@@ -24,7 +24,10 @@ const Request = ({requestData}) => {
            <TableCell>{requester}</TableCell>
            <TableCell>{date}</TableCell>
            <TableCell>{description}</TableCell>
-           <TableCell className={classes.buttons}><button>Accept</button><button>Decline</button></TableCell>
+           <TableCell className={classes.buttons}>
+               <Button variant="contained" color="primary" onClick={() => updateRequestList(index)}>Accept</Button>
+               <Button variant="contained" color="secondary" onClick={() => updateRequestList(index)}>Decline</Button>
+           </TableCell>
        </TableRow>
     );
 }
