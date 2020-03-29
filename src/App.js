@@ -1,15 +1,21 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch
+} from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import { connect } from "react-redux";
-import VisibleRules from "./containers/Rule/RulesViewContainer";
-import SideNavContainer from "./containers/SideNavContainer";
+
 import Header from "./components/Header";
+import SideNavContainer from "./containers/SideNavContainer";
+import VisibleRules from "./containers/Rule/RulesViewContainer";
 import NewUser from "./components/NewUser";
 import AdminView from "./views/AdminView";
 import ErrorView from "./views/ErrorView";
 import LoginView from "./views/LoginView";
-import { ValidationStatuses } from "./actions";
+import {ValidationStatuses} from "./actions";
 
 const useStyles = makeStyles({
   root: {
@@ -42,61 +48,55 @@ const useStyles = makeStyles({
   }
 });
 
-const AuthApp = ({classes, userFullName}) => (
-  <>
-    <Header title={`Welcome ${userFullName}!`} styles={classes.title} />
-    <div className={classes.mainContent}>
-      <SideNavContainer styles={classes.sideNav} />
-      <div className={classes.contentWindow}>
-        <Switch>
-          <Route exact path="/">
-            <VisibleRules />
-          </Route>
-          <Route path="/login">
-            <Redirect to="/" />
-          </Route>
-          <Route path="/newUser">
-            <NewUser />
-          </Route>
-          <Route path="/rules">
-            <VisibleRules />
-          </Route>
-          <Route path="/admin">
-            <AdminView />
-          </Route>
-          <Route>
-            <ErrorView />
-          </Route>
-        </Switch>
-      </div>
-    </div>
-  </>
-);
-
-const UnAuthApp = () => (
-  <div>
-    <LoginView />
-  </div>
-);
-
 // eslint-disable-next-line react/prop-types
-const App = ({ userFullName, auth }) => {
+const App = ({ auth, displayName }) => {
   const classes = useStyles();
+
   return (
     <Router>
       <div className={classes.root}>
-        { auth === ValidationStatuses.SIGNED_OUT ?
-          <UnAuthApp /> :
-          <AuthApp classes={classes} userFullName={userFullName}/>
-        }
+        {auth === ValidationStatuses.VALIDATING_SUCCESS ? (
+          <>
+            <Header title={`Welcome ${displayName}!`} styles={classes.title} />
+            <div className={classes.mainContent}>
+              <SideNavContainer styles={classes.sideNav} />
+              <div className={classes.contentWindow}>
+                <Switch>
+                  <Route exact path="/">
+                    <VisibleRules />
+                  </Route>
+                  <Route path="/login">
+                    <Redirect to="/" />
+                  </Route>
+                  <Route path="/newUser">
+                    <NewUser />
+                  </Route>
+                  <Route path="/rules">
+                    <VisibleRules />
+                  </Route>
+                  <Route path="/admin">
+                    <AdminView />
+                  </Route>
+                  <Route>
+                    <ErrorView />
+                  </Route>
+                </Switch>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div>
+            <LoginView />
+          </div>
+        )}
       </div>
     </Router>
   );
 };
 
 const mapStateToProps = state => ({
-  userFullName: state.user.userFullName,
-  auth: state.login.status
+  auth: state.login.status,
+  displayName: state.user.userFullName
 });
 
 export default connect(mapStateToProps)(App);

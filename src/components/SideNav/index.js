@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import GavelIcon from "@material-ui/icons/Gavel";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
@@ -28,71 +27,54 @@ const useStyles = makeStyles({
   }
 });
 
-const SideNav = ({ styles, status, toggleAuth, getAuth }) => {
+const SideNav = ({ styles, toggleAuth }) => {
   const classes = useStyles();
   const routes = [
-    { text: "Login", route: "rules", status: ValidationStatuses.SIGNED_OUT },
     {
       text: "Rules",
-      route: "rules",
-      status: ValidationStatuses.VALIDATING_SUCCESS
+      route: "rules"
     },
     {
       text: "Profile",
-      route: "profile",
-      status: ValidationStatuses.VALIDATING_SUCCESS
+      route: "profile"
     },
     {
       text: "Admin",
-      route: "admin",
-      status: ValidationStatuses.VALIDATING_SUCCESS
+      route: "admin"
     },
     {
       text: "Sign Out",
-      route: "login",
-      status: ValidationStatuses.VALIDATING_SUCCESS
+      route: "login"
     }
   ];
-  const icons =
-    status === ValidationStatuses.VALIDATING_SUCCESS
-      ? [
-          <GavelIcon className={classes.icon} />,
-          <AccountBoxIcon className={classes.icon} />,
-          <SupervisorAccountIcon className={classes.icon} />,
-          <ExitToAppIcon className={classes.icon} />
-        ]
-      : [<VpnKeyIcon className={classes.icon} />];
-
-  const userStates = ["USER_LOGIN", "ADMIN_LOGIN"];
+  const icons = [
+    <GavelIcon className={classes.icon} />,
+    <AccountBoxIcon className={classes.icon} />,
+    <SupervisorAccountIcon className={classes.icon} />,
+    <ExitToAppIcon className={classes.icon} />
+  ];
 
   return (
     <div className={styles}>
-      {routes
-        .filter(s => s.status === status)
-        .map((r, i) => (
-          <Link
-            key={r.route}
-            to={`/${r.route}`}
-            className={
-              r.text === "Sign Out"
-                ? [classes.link, classes.signOut].join(" ")
-                : classes.link
-            }
-            onClick={() => {
-              switch (r.text) {
-                case "Sign Out":
-                  return toggleAuth(ValidationStatuses.SIGNED_OUT);
-                case "Login":
-                  return toggleAuth(userStates[Math.floor(Math.random()*userStates.length)]);
-                default:
-                  return {};
-              }
-            }}
-          >
-            {icons[i]}
-            {r.text}
-          </Link>
-        ))}
+      {routes.map((r, i) => (
+        <Link
+          key={r.route}
+          to={`/${r.route}`}
+          className={
+            r.text === "Sign Out"
+              ? [classes.link, classes.signOut].join(" ")
+              : classes.link
+          }
+          onClick={() =>
+            r.text === "Sign Out"
+              ? toggleAuth(ValidationStatuses.SIGNED_OUT)
+              : {}
+          }
+        >
+          {icons[i]}
+          {r.text}
+        </Link>
+      ))}
     </div>
   );
 };
