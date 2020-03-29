@@ -52,3 +52,14 @@ export const updateUser = updatedInfo => ({
   type: "UPDATE_USER_INFO",
   updatedInfo
 });
+
+// REQUEST ACTIONS
+export const addRequest = requestData => ({
+  type: "ADD_REQUEST",
+  requestData
+});
+
+export const updateRequests = index => ({
+  type: "UPDATE_REQUESTS",
+  index
+});

@@ -3,6 +3,7 @@ import Requests from "../components/Admin/Requests";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import ManageGroups from "../components/Admin/ManageGroups";
 import {connect} from "react-redux";
+import {updateRequests} from "../actions";
 
 const useStyles = makeStyles({
   container: {
@@ -14,22 +15,12 @@ const useStyles = makeStyles({
   }
 });
 
-const AdminView = ({ auth }) => {
+const AdminView = ({ auth, updateRequestList, requestList }) => {
   const classes = useStyles();
-
-  const reqdata = [];
-
-  for (let i = 0; i < 15; i++) {
-    reqdata.push({
-      requester: "Me",
-      date: "1-21-2020",
-      description: "Rule info here"
-    });
-  }
 
   return auth === "Admin" ? (
     <div className={classes.container}>
-      <Requests requestsArray={reqdata} />
+      <Requests requestsArray={requestList} updateRequestList={updateRequestList}/>
       <ManageGroups />
     </div>
   ) : (
@@ -40,7 +31,12 @@ const AdminView = ({ auth }) => {
 };
 
 const mapStateToProps = state => ({
-  auth: state.user.role
+  auth: state.user.role,
+  requestList: state.requests
 });
 
-export default connect(mapStateToProps)(AdminView);
+const mapDispatchToProps = dispatch => ({
+  updateRequestList: index => dispatch(updateRequests(index))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminView);
