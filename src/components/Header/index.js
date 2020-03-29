@@ -3,16 +3,28 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
 
-const Header = ({ title, styles }) => (
-  <AppBar position="fixed">
-    <Toolbar>
-      <Typography variant="h6" className={styles}>
-        {title}
-      </Typography>
-    </Toolbar>
-  </AppBar>
-);
+const useStyles = makeStyles({
+  title: {
+    flex: 1
+  }
+});
+
+const Header = ({ userFullName }) => {
+  const classes = useStyles();
+
+  return (
+    <AppBar position="fixed">
+      <Toolbar>
+        <Typography variant="h6" className={classes.title}>
+          {`Welcome, ${userFullName}`}
+        </Typography>
+      </Toolbar>
+    </AppBar>
+  );
+};
 
 Header.propTypes = {
   title: PropTypes.string.isRequired,
@@ -23,4 +35,8 @@ Header.defaultProps = {
   styles: ""
 };
 
-export default Header;
+const mapStateToProps = state => ({
+  userFullName: state.user.userFullName
+});
+
+export default connect(mapStateToProps)(Header);

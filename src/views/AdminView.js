@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   }
 });
 
-const AdminView = ({ auth, requestList }) => {
+const AdminView = ({ auth }) => {
   const classes = useStyles();
 
   return auth === "Admin" ? (
@@ -30,8 +30,7 @@ const AdminView = ({ auth, requestList }) => {
 };
 
 const mapStateToProps = state => ({
-  auth: state.user.role,
-  requestList: state.requests
+  auth: state.user.role
 });
 
 export default connect(mapStateToProps)(AdminView);
