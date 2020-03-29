@@ -41,12 +41,6 @@ export const ValidationStatuses = {
 };
 
 // USER ACTIONS
-export const retrieveUser = (username, password, privateKey) => ({
-  type: "GET_USER",
-  username,
-  password,
-  privateKey
-});
 
 export const updateUser = updatedInfo => ({
   type: "UPDATE_USER_INFO",

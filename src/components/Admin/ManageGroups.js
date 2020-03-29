@@ -56,7 +56,7 @@ const useStyles = makeStyles({
 
 const ManageGroups = () => {
   const groups = ["Admin", "Rule Setter", "User"];
-  const [selectedGroup, setSelectedGroup] = useState();
+  const [selectedGroup, setSelectedGroup] = useState('');
   const classes = useStyles();
 
   return (

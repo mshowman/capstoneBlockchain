@@ -18,8 +18,6 @@ const mockAuthUser = {
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "GET_USER":
-      return state;
     case "UPDATE_USER_INFO":
       return {
         ...state,

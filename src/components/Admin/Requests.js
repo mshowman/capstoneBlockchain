@@ -1,5 +1,4 @@
 import React from "react";
-import Request from "./Request";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
@@ -8,6 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import RequestContainer from "../../containers/Request/RequestContainer";
 
 const useStyles = makeStyles({
   container: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   }
 });
 
-const Requests = ({ requestsArray, updateRequestList }) => {
+const Requests = ({ requestList }) => {
   const classes = useStyles();
 
   return (
@@ -31,12 +31,12 @@ const Requests = ({ requestsArray, updateRequestList }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {requestsArray.length > 0 ? (
-            requestsArray.map((r, index) => (
-              <Request
+          {requestList.length > 0 ? (
+              requestList.map((r, index) => (
+              <RequestContainer
                 requestData={r}
                 index={index}
-                updateRequestList={updateRequestList}
+                key={`request-${index}`}
               />
             ))
           ) : (

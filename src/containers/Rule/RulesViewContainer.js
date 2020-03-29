@@ -1,4 +1,4 @@
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import RuleView from "../../views/RuleView";
 
 const mapStateToProps = state => ({

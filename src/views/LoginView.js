@@ -2,7 +2,6 @@ import { connect } from "react-redux";
 import {
   validateCredentials,
   toggleAuth,
-  ValidationStatuses
 } from "../actions/index";
 import Login from "../components/Login";
 
@@ -15,7 +14,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   validate: (username, password, privateKey) =>
     dispatch(validateCredentials(username, password, privateKey)),
-  clearErrors: () => dispatch(toggleAuth(ValidationStatuses.SIGNED_OUT)),
   toggleAuth: action => dispatch(toggleAuth(action))
 });
 

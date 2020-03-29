@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { MuiThemeProvider, Paper } from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 import Logo from "../assets/bloxiomLogo.png";
 import Background from "../assets/shapes.jpg";
 
@@ -53,77 +53,70 @@ const useStyles = makeStyles({
     margin: 15
   }
 });
-const Login = ({ status, role, errors, toggleAuth, clearErrors, validate }) => {
+const Login = ({ status, role, errors, validate, toggleAuth }) => {
   const classes = useStyles();
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
-  const userStates = ["USER_LOGIN", "ADMIN_LOGIN"];
 
-  useEffect(() => {
-    if (errors) {
-      setPassword("");
-    }
-    if (status === "OK") toggleAuth(userStates[role]);
-  }, [errors, status, role, toggleAuth, clearErrors, userStates]);
+  const signInHandler = () => {
+    validate(user, password, "secret");
+    if (status === "OK") toggleAuth(role === 0 ? "USER_LOGIN" : "ADMIN_LOGIN");
+  }
 
   return (
     <div className={classes.root}>
-      <MuiThemeProvider>
-        <Paper className={classes.container} style={{ margin: "0 auto" }}>
-          <img className={classes.logo} src={Logo} alt="Bloxiom" />
-          <div
-            className={classes.login}
-            onKeyPress={e => {
-              if (e.key === "Enter") validate(user, password, "secret");
+      <Paper className={classes.container} style={{ margin: "0 auto" }}>
+        <img className={classes.logo} src={Logo} alt="Bloxiom" />
+        <div
+          className={classes.login}
+          onKeyPress={e => {
+            if (e.key === "Enter") validate(user, password, "secret");
+          }}
+        >
+          <TextField
+            error={status === "FAILED"}
+            helperText={
+              status === "FAILED" ? errors : ""
+            }
+            id="standard-required"
+            label="Username"
+            value={user}
+            variant="outlined"
+            required
+            className={classes.textbox}
+            onChange={e => setUser(e.target.value)}
+            onClick={() => {
+              setUser("");
             }}
+          />
+          <TextField
+            error={status === "FAILED"}
+            helperText={
+              status === "FAILED" ? errors : ""
+            }
+            id="standard-password-input"
+            label="Password"
+            value={password}
+            variant="outlined"
+            required
+            className={classes.textbox}
+            onChange={e => setPassword(e.target.value)}
+            type="password"
+            onClick={() => {
+              setPassword("");
+            }}
+          />
+          <Button
+            variant="contained"
+            aria-label="like"
+            className={classes.fab}
+            color="primary"
+            onClick={signInHandler}
           >
-            <TextField
-              error={status === "FAILED"}
-              helperText={
-                status === "FAILED" ? "Bad username and/or password." : ""
-              }
-              id="standard-required"
-              label="Username"
-              value={user}
-              variant="outlined"
-              required="true"
-              className={classes.textbox}
-              onChange={e => setUser(e.target.value)}
-              onClick={() => {
-                clearErrors();
-                setUser("");
-              }}
-            />
-            <TextField
-              error={status === "FAILED"}
-              helperText={
-                status === "FAILED" ? "Bad username and/or password." : ""
-              }
-              id="standard-password-input"
-              label="Password"
-              value={password}
-              variant="outlined"
-              required="true"
-              className={classes.textbox}
-              onChange={e => setPassword(e.target.value)}
-              type="password"
-              onClick={() => {
-                clearErrors();
-                setPassword("");
-              }}
-            />
-            <Button
-              variant="extended"
-              aria-label="like"
-              className={classes.fab}
-              color="white"
-              onClick={() => validate(user, password, "secret")}
-            >
-              Login
-            </Button>
-          </div>
-        </Paper>
-      </MuiThemeProvider>
+            Login
+          </Button>
+        </div>
+      </Paper>
     </div>
   );
 };
