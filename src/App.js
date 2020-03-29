@@ -57,7 +57,7 @@ const App = ({ auth, displayName }) => {
       <div className={classes.root}>
         {auth === ValidationStatuses.VALIDATING_SUCCESS ? (
           <>
-            <Header title={`Welcome ${displayName}!`} styles={classes.title} />
+            <Header />
             <div className={classes.mainContent}>
               <SideNavContainer styles={classes.sideNav} />
               <div className={classes.contentWindow}>
@@ -96,7 +96,6 @@ const App = ({ auth, displayName }) => {
 
 const mapStateToProps = state => ({
   auth: state.login.status,
-  displayName: state.user.userFullName
 });
 
 export default connect(mapStateToProps)(App);
