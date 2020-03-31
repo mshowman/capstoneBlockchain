@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import GavelIcon from "@material-ui/icons/Gavel";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import { BloxiomContext } from "../../context/bloxiomContext";
 
 const useStyles = makeStyles({
   link: {
@@ -52,7 +53,9 @@ const SideNav = props => {
     <ExitToAppIcon className={classes.icon} />
   ];
 
-  return context => (
+  const context = useContext(BloxiomContext);
+
+  return (
     <div className={props.styles}>
       {routes.map((r, i) => (
         <Link

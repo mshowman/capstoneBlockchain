@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {makeStyles, TableCell, TableRow, Button} from "@material-ui/core";
+import {BloxiomContext} from "../../context/bloxiomContext";
 
 const useStyles = makeStyles({
    buttons: {
@@ -12,7 +13,9 @@ const useStyles = makeStyles({
    }
 });
 
-const Request = ({requestData, index, updateRequestList}) => {
+const Request = props => {
+    const { requestData, index } = props;
+    const context = useContext(BloxiomContext);
 
     if (!requestData) throw new Error('Missing key data');
 
@@ -25,8 +28,8 @@ const Request = ({requestData, index, updateRequestList}) => {
            <TableCell>{date}</TableCell>
            <TableCell>{description}</TableCell>
            <TableCell className={classes.buttons}>
-               <Button variant="contained" color="primary" onClick={() => updateRequestList(index)}>Accept</Button>
-               <Button variant="contained" color="secondary" onClick={() => updateRequestList(index)}>Decline</Button>
+               <Button variant="contained" color="primary" onClick={() => context.updateRequests(index)}>Accept</Button>
+               <Button variant="contained" color="secondary" onClick={() => context.updateRequests(index)}>Decline</Button>
            </TableCell>
        </TableRow>
     );

@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 
 import { BloxiomContext } from "./bloxiomContext";
 
@@ -9,17 +9,18 @@ import loginReducer, {
 
 import userReducer, {
   GET_USER_INFO,
-  RESET_USER_INFO,
-  UPDATE_USER_INFO
+  RESET_USER_INFO
+  // UPDATE_USER_INFO
 } from "../reducers/userReducer";
 
 import ruleReducer, {
   ADD_RULE,
   CLEAR_RULES,
   DELETE_RULE,
-  EDIT_RULE,
-  GET_RULES_FOR_USER
+  EDIT_RULE
+  // GET_RULES_FOR_USER
 } from "../reducers/ruleReducer";
+
 import requestReducer, {
   ADD_REQUEST,
   CLEAR_REQUESTS,
@@ -28,8 +29,6 @@ import requestReducer, {
 
 const GlobalState = props => {
   const login = {
-    username: "",
-    password: "",
     status: VALIDATION_STATUSES.SIGNED_OUT,
     errors: null,
     role: -1
@@ -81,38 +80,30 @@ const GlobalState = props => {
       privateKey: "secret",
       type: VALIDATE_CREDENTIALS
     });
-
-    console.log(loginState.status)
-    console.log(VALIDATION_STATUSES.VALIDATING_SUCCESS === loginState.status)
-
-    if (loginState.status === VALIDATION_STATUSES.VALIDATING_SUCCESS) getUser();
+    userDispatch({ userState, role: loginState.role, type: GET_USER_INFO });
   };
 
   const signOut = () => {
     loginDispatch({ loginState, type: VALIDATION_STATUSES.SIGNED_OUT });
-    resetUser();
-    clearRules();
-    clearRequests();
+    userDispatch({ userState, type: RESET_USER_INFO });
+    rulesDispatch({ rulesState, type: CLEAR_RULES });
+    requestsDispatch({ requestsState, type: CLEAR_REQUESTS });
   };
 
   // USER ACTIONS
   const getUser = () => {
-    console.log(userState)
+    console.log(loginState.role);
     userDispatch({ userState, role: loginState.role, type: GET_USER_INFO });
   };
 
-  const updateUser = updatedInfo => {
-    userDispatch({ userState, updatedInfo, type: UPDATE_USER_INFO });
-  };
-
-  const resetUser = () => {
-    userDispatch({ state: user, type: RESET_USER_INFO });
-  };
+  // const updateUser = updatedInfo => {
+  //   userDispatch({ userState, updatedInfo, type: UPDATE_USER_INFO });
+  // };
 
   // RULES ACTIONS
-  const getRules = () => {
-    rulesDispatch({ type: GET_RULES_FOR_USER });
-  };
+  // const getRules = () => {
+  //   rulesDispatch({ type: GET_RULES_FOR_USER });
+  // };
 
   const addRule = rule => {
     rulesDispatch({ rulesState, rule, type: ADD_RULE });
@@ -126,10 +117,6 @@ const GlobalState = props => {
     rulesDispatch({ rulesState, index, rule, type: EDIT_RULE });
   };
 
-  const clearRules = () => {
-    rulesDispatch({ rulesState, type: CLEAR_RULES });
-  };
-
   // REQUESTS ACTIONS
   const addRequest = requestData => {
     requestsDispatch({ requestsState, requestData, type: ADD_REQUEST });
@@ -137,10 +124,6 @@ const GlobalState = props => {
 
   const updateRequests = index => {
     requestsDispatch({ requestsState, index, type: UPDATE_REQUESTS });
-  };
-
-  const clearRequests = () => {
-    requestsDispatch({ requestsState, type: CLEAR_REQUESTS });
   };
 
   return (
