@@ -1,11 +1,10 @@
-import React, {useState} from "react";
-import PropTypes from "prop-types";
-
-import { makeStyles } from "@material-ui/core";
+import React, {useContext, useState} from "react";
+import {makeStyles} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
-import SavedRuleView from "../containers/Rule/SavedRuleContainer";
-import RuleDialogContainer from "../containers/Rule/RuleDialogContainer";
+import {BloxiomContext} from "../context/bloxiomContext";
+import SavedRule from "../components/Rule/SavedRule";
+import RuleDialog from "../components/Rule/RuleDialog";
 
 const useStyles = makeStyles({
   addRule: {
@@ -22,8 +21,9 @@ const useStyles = makeStyles({
   }
 });
 
-const RuleView = ({ rules }) => {
+const RuleView = props => {
   const classes = useStyles();
+  const context = useContext(BloxiomContext);
   const [showDialog, setShowDialog] = useState(false);
 
   function newDialog(toggle) {
@@ -33,11 +33,10 @@ const RuleView = ({ rules }) => {
   return (
     <>
       <div>
-        {rules &&
-          rules.length > 0 &&
+        {context.rules.length > 0 &&
           // eslint-disable-next-line react/no-array-index-key
-          rules.map((rule, i) => (
-            <SavedRuleView key={i} id={rule.id} info={rule} />
+          context.rules.map((rule, i) => (
+            <SavedRule key={i} id={rule.id} info={rule} />
           ))}
         <div className={classes.addRule}>
           <Button
@@ -50,13 +49,9 @@ const RuleView = ({ rules }) => {
           </Button>
         </div>
       </div>
-      {showDialog && <RuleDialogContainer showDialog closeDialog={newDialog} />}
+      {showDialog && <RuleDialog showDialog closeDialog={newDialog} />}
     </>
   );
-};
-
-RuleView.propTypes = {
-  rules: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 export default RuleView;

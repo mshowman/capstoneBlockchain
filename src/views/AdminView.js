@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import ManageGroups from "../components/Admin/ManageGroups";
-import RequestsContainer from "../containers/Request/RequestsContainer";
-import { connect } from "react-redux";
+import { BloxiomContext } from "../context/bloxiomContext";
+import Requests from "../components/Admin/Requests";
 
 const useStyles = makeStyles({
   container: {
@@ -14,12 +14,13 @@ const useStyles = makeStyles({
   }
 });
 
-const AdminView = ({ auth }) => {
+const AdminView = props => {
   const classes = useStyles();
+  const context = useContext(BloxiomContext);
 
-  return auth === "Admin" ? (
+  return context.user.role === "Admin" ? (
     <div className={classes.container}>
-      <RequestsContainer />
+      <Requests />
       <ManageGroups />
     </div>
   ) : (
@@ -29,8 +30,4 @@ const AdminView = ({ auth }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  auth: state.user.role
-});
-
-export default connect(mapStateToProps)(AdminView);
+export default AdminView;

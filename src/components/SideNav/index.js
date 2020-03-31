@@ -1,12 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import GavelIcon from "@material-ui/icons/Gavel";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
-import { ValidationStatuses } from "../../actions";
 
 const useStyles = makeStyles({
   link: {
@@ -27,7 +25,7 @@ const useStyles = makeStyles({
   }
 });
 
-const SideNav = ({ styles, toggleAuth }) => {
+const SideNav = props => {
   const classes = useStyles();
   const routes = [
     {
@@ -54,8 +52,8 @@ const SideNav = ({ styles, toggleAuth }) => {
     <ExitToAppIcon className={classes.icon} />
   ];
 
-  return (
-    <div className={styles}>
+  return context => (
+    <div className={props.styles}>
       {routes.map((r, i) => (
         <Link
           key={r.route}
@@ -65,11 +63,7 @@ const SideNav = ({ styles, toggleAuth }) => {
               ? [classes.link, classes.signOut].join(" ")
               : classes.link
           }
-          onClick={() =>
-            r.text === "Sign Out"
-              ? toggleAuth(ValidationStatuses.SIGNED_OUT)
-              : {}
-          }
+          onClick={() => (r.text === "Sign Out" ? context.signOut() : {})}
         >
           {icons[i]}
           {r.text}
@@ -77,14 +71,6 @@ const SideNav = ({ styles, toggleAuth }) => {
       ))}
     </div>
   );
-};
-
-SideNav.propTypes = {
-  styles: PropTypes.string
-};
-
-SideNav.defaultProps = {
-  styles: ""
 };
 
 export default SideNav;

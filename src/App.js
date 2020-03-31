@@ -1,21 +1,17 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  Switch
-} from "react-router-dom";
-import { makeStyles } from "@material-ui/core";
-import { connect } from "react-redux";
+import React, {useContext} from "react";
+import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
+import {makeStyles} from "@material-ui/core";
 
 import Header from "./components/Header";
-import SideNavContainer from "./containers/SideNavContainer";
-import VisibleRules from "./containers/Rule/RulesViewContainer";
 import NewUser from "./components/NewUser";
 import AdminView from "./views/AdminView";
 import ErrorView from "./views/ErrorView";
 import LoginView from "./views/LoginView";
-import {ValidationStatuses} from "./actions";
+import GlobalState from "./context/GlobalState";
+import {BloxiomContext} from "./context/bloxiomContext";
+import {VALIDATION_STATUSES} from "./reducers/loginReducer";
+import SideNav from "./components/SideNav";
+import RuleView from "./views/RuleView";
 
 const useStyles = makeStyles({
   root: {
@@ -49,39 +45,34 @@ const useStyles = makeStyles({
 });
 
 // eslint-disable-next-line react/prop-types
-const App = ({ auth, displayName }) => {
+const App = props => {
   const classes = useStyles();
+  const context = useContext(BloxiomContext);
 
   return (
-    <Router>
+    <GlobalState>
       <div className={classes.root}>
-        {auth === ValidationStatuses.VALIDATING_SUCCESS ? (
+        {context.login.status === VALIDATION_STATUSES.VALIDATING_SUCCESS ? (
           <>
             <Header />
             <div className={classes.mainContent}>
-              <SideNavContainer styles={classes.sideNav} />
-              <div className={classes.contentWindow}>
-                <Switch>
-                  <Route exact path="/">
-                    <VisibleRules />
-                  </Route>
-                  <Route path="/login">
-                    <Redirect to="/" />
-                  </Route>
-                  <Route path="/newUser">
-                    <NewUser />
-                  </Route>
-                  <Route path="/rules">
-                    <VisibleRules />
-                  </Route>
-                  <Route path="/admin">
-                    <AdminView />
-                  </Route>
-                  <Route>
-                    <ErrorView />
-                  </Route>
-                </Switch>
-              </div>
+              <Router>
+                <>
+                  <SideNav styles={classes.sideNav} />
+                  <div className={classes.contentWindow}>
+                    <Switch>
+                      <Route exact path="/" component={RuleView} />
+                      <Route path="/login">
+                        <Redirect to="/" />
+                      </Route>
+                      <Route path="/newUser" component={NewUser} />
+                      <Route path="/rules" component={RuleView} />
+                      <Route path="/admin" component={AdminView} />
+                      <Route component={ErrorView} />
+                    </Switch>
+                  </div>
+                </>
+              </Router>
             </div>
           </>
         ) : (
@@ -90,12 +81,8 @@ const App = ({ auth, displayName }) => {
           </div>
         )}
       </div>
-    </Router>
+    </GlobalState>
   );
 };
 
-const mapStateToProps = state => ({
-  auth: state.login.status,
-});
-
-export default connect(mapStateToProps)(App);
+export default App;

@@ -27,12 +27,11 @@ const Header = ({ userFullName }) => {
 };
 
 Header.propTypes = {
-  title: PropTypes.string.isRequired,
   styles: PropTypes.string
 };
 
 Header.defaultProps = {
-  styles: ""
+  styles: "",
 };
 
 const mapStateToProps = state => ({
