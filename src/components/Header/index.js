@@ -1,10 +1,10 @@
-import PropTypes from "prop-types";
+import React, { useContext } from "react";
+
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar/AppBar";
-import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
+import { BloxiomContext } from "../../context/bloxiomContext";
 
 const useStyles = makeStyles({
   title: {
@@ -12,30 +12,19 @@ const useStyles = makeStyles({
   }
 });
 
-const Header = ({ userFullName }) => {
+const Header = props => {
   const classes = useStyles();
+  const context = useContext(BloxiomContext);
 
   return (
     <AppBar position="fixed">
       <Toolbar>
         <Typography variant="h6" className={classes.title}>
-          {`Welcome, ${userFullName}`}
+          {`Welcome, ${context.user.userFullName}`}
         </Typography>
       </Toolbar>
     </AppBar>
   );
 };
 
-Header.propTypes = {
-  styles: PropTypes.string
-};
-
-Header.defaultProps = {
-  styles: "",
-};
-
-const mapStateToProps = state => ({
-  userFullName: state.user.userFullName
-});
-
-export default connect(mapStateToProps)(Header);
+export default Header;

@@ -3,8 +3,6 @@ import { VALIDATION_STATUSES } from "../reducers/loginReducer";
 
 export const BloxiomContext = React.createContext({
   login: {
-    username: "",
-    password: "",
     status: VALIDATION_STATUSES.SIGNED_OUT,
     errors: null,
     role: -1

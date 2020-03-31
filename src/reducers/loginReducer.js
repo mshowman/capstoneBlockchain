@@ -13,17 +13,20 @@ export default (state, action) => {
         case "admin1":
           if (action.password === "password" && action.privateKey) {
             return {
+              ...state,
               status: VALIDATION_STATUSES.VALIDATING_SUCCESS,
               errors: null,
               role: action.username.includes("user") ? 0 : 1
             };
           }
           return {
+            ...state,
             status: VALIDATION_STATUSES.VALIDATING_ERROR,
             errors: "Bad username / password"
           };
         default:
           return {
+            ...state,
             status: VALIDATION_STATUSES.VALIDATING_ERROR,
             errors: "Something went wrong. Please try again in a few minutes."
           };
