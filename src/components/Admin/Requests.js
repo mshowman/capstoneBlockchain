@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
@@ -7,7 +7,8 @@ import Paper from "@material-ui/core/Paper";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import RequestContainer from "../../containers/Request/RequestContainer";
+import Request from "./Request";
+import {BloxiomContext} from "../../context/bloxiomContext";
 
 const useStyles = makeStyles({
   container: {
@@ -16,8 +17,9 @@ const useStyles = makeStyles({
   }
 });
 
-const Requests = ({ requestList }) => {
+const Requests = props => {
   const classes = useStyles();
+  const context = useContext(BloxiomContext);
 
   return (
     <TableContainer component={Paper} className={classes.container}>
@@ -31,9 +33,9 @@ const Requests = ({ requestList }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {requestList.length > 0 ? (
-              requestList.map((r, index) => (
-              <RequestContainer
+          {context.requests.length > 0 ? (
+              context.requests.map((r, index) => (
+              <Request
                 requestData={r}
                 index={index}
                 key={`request-${index}`}

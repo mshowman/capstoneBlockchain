@@ -1,8 +1,12 @@
+export const GET_RULES_FOR_USER = "GET_RULES_FOR_USER";
+export const ADD_RULE = "ADD_USER";
+export const DELETE_RULE = "DELETE_RULE";
+export const EDIT_RULE = "EDIT_RULE";
+export const CLEAR_RULES = "CLEAR_RULES";
+
 let idNumber = 0;
 
-const initialState = [];
-
-const ruleReducer = (state = initialState, action) => {
+const ruleReducer = (state, action) => {
   switch (action.type) {
     case "GET_RULES_FOR_USER":
       return state;
@@ -15,6 +19,8 @@ const ruleReducer = (state = initialState, action) => {
       return state.map(r =>
         r.id === action.index ? { ...r, ...action.rule } : r
       );
+    case "CLEAR_RULES":
+      return [];
     default:
       return state;
   }

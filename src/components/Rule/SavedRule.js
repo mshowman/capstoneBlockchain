@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-
+import React, {useContext, useState} from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
@@ -12,7 +10,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import RuleDialogContainer from "../../containers/Rule/RuleDialogContainer";
+
+import {BloxiomContext} from "../../context/bloxiomContext";
+import RuleDialog from "./RuleDialog";
 
 const useStyles = makeStyles({
   root: {
@@ -59,12 +59,14 @@ const useStyles = makeStyles({
   }
 });
 
-const SavedRule = ({ id, info, deleteRule }) => {
+const SavedRule = props => {
   const classes = useStyles();
   const [openDeleteCheck, setOpenDeleteCheck] = useState(false);
   const [open, setOpen] = useState(false);
   const [openRuleDialog, setOpenRuleDialog] = useState(false);
+  const context = useContext(BloxiomContext);
 
+  const { id, info } = props;
   const { name, selectedRule, operator, condition, result } = info;
 
   function closeRuleDialog() {
@@ -106,7 +108,7 @@ const SavedRule = ({ id, info, deleteRule }) => {
           </Button>
           <Button
             onClick={() => {
-              deleteRule(id);
+              context.deleteRule(id);
               setOpenDeleteCheck(false);
             }}
             color="primary"
@@ -117,7 +119,7 @@ const SavedRule = ({ id, info, deleteRule }) => {
         </DialogActions>
       </Dialog>
       {openRuleDialog && (
-        <RuleDialogContainer
+        <RuleDialog
           showDialog
           closeDialog={closeRuleDialog}
           info={info}
@@ -126,17 +128,6 @@ const SavedRule = ({ id, info, deleteRule }) => {
       )}
     </Paper>
   );
-};
-
-SavedRule.propTypes = {
-  info: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    selectedRule: PropTypes.string.isRequired,
-    condition: PropTypes.string.isRequired,
-    result: PropTypes.string.isRequired
-  }).isRequired,
-  id: PropTypes.number.isRequired,
-  deleteRule: PropTypes.func.isRequired
 };
 
 export default SavedRule;
