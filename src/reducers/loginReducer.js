@@ -32,6 +32,7 @@ export default (state, action) => {
           };
       }
     case VALIDATION_STATUSES.SIGNED_OUT:
+      return { status: VALIDATION_STATUSES.SIGNED_OUT, errors: null, role: -1 };
     default:
       return state;
   }

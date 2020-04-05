@@ -4,7 +4,7 @@ export const DELETE_RULE = "DELETE_RULE";
 export const EDIT_RULE = "EDIT_RULE";
 export const CLEAR_RULES = "CLEAR_RULES";
 
-let idNumber = 0;
+let idNumber = 1;
 
 const ruleReducer = (state, action) => {
   switch (action.type) {

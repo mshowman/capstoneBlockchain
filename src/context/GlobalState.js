@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useReducer } from "react";
 
 import { BloxiomContext } from "./bloxiomContext";
 
@@ -17,13 +17,15 @@ import ruleReducer, {
   ADD_RULE,
   CLEAR_RULES,
   DELETE_RULE,
-  EDIT_RULE
+  EDIT_RULE,
+  GET_RULES_FOR_USER
   // GET_RULES_FOR_USER
 } from "../reducers/ruleReducer";
 
 import requestReducer, {
   ADD_REQUEST,
   CLEAR_REQUESTS,
+  GET_REQUESTS,
   UPDATE_REQUESTS
 } from "../reducers/requestReducer";
 
@@ -36,11 +38,23 @@ const GlobalState = props => {
 
   const user = {
     id: 0,
-    role: "",
+    role: 0,
     userFullName: ""
   };
 
-  const rules = [];
+  const rules = [
+    {
+      id: 0,
+      rule: {
+        groupOrIndividual: "Group",
+        name: "Group 1",
+        selectedRule: "At One Time",
+        operator: "Less Than",
+        condition: "123",
+        result: "Sign off needed"
+      }
+    }
+  ];
 
   const requests = [
     {
@@ -81,6 +95,8 @@ const GlobalState = props => {
       type: VALIDATE_CREDENTIALS
     });
     userDispatch({ userState, role: loginState.role, type: GET_USER_INFO });
+    rulesDispatch({ rules, type: GET_RULES_FOR_USER });
+    requestsDispatch({ requests, type: GET_REQUESTS });
   };
 
   const signOut = () => {
@@ -92,7 +108,6 @@ const GlobalState = props => {
 
   // USER ACTIONS
   const getUser = () => {
-    console.log(loginState.role);
     userDispatch({ userState, role: loginState.role, type: GET_USER_INFO });
   };
 
