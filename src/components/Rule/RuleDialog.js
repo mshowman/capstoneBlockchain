@@ -1,5 +1,5 @@
-import React, {useCallback, useContext, useEffect, useState} from "react";
-import {DialogContent} from "@material-ui/core";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { DialogContent } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -8,10 +8,10 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 
 import Dropdown from "./Dropdown";
-import {groupMockValues, individualMockValues} from "../../constants/Groups";
+import { groupMockValues, individualMockValues } from "../../constants/Groups";
 import mockRuleVariablesForGroups from "../../constants/GroupRuleVariables";
 import mockRuleVariablesForIndividuals from "../../constants/IndividualRuleVariables";
-import {BloxiomContext} from "../../context/bloxiomContext";
+import { BloxiomContext } from "../../context/bloxiomContext";
 
 const useStyles = makeStyles({
   root: {
@@ -49,14 +49,17 @@ const useStyles = makeStyles({
 const RuleDialog = props => {
   const classes = useStyles();
   const context = useContext(BloxiomContext);
-  const { showDialog, closeDialog, id, info } = props;
+  const { showDialog, closeDialog, id, info, newRule } = props;
 
-  const editingRule = id > -1;
+  const information = newRule
+    ? { name: '', groupOrIndividual: '', operator: '', condition: '', result: '' }
+    : info;
+  const editingRule = !!id;
 
   const [selectedGroupInd, setSelectedGroupInd] = useState(
-    info.groupOrIndividual
+    information.groupOrIndividual
   );
-  const [selectedName, setSelectedName] = useState(info.name);
+  const [selectedName, setSelectedName] = useState(information.name);
 
   const getAvailableRules = useCallback(() => {
     const mockRules =
@@ -74,10 +77,12 @@ const RuleDialog = props => {
     getAvailableRules()
   );
 
-  const [selectedRule, setSelectedRule] = useState(info.selectedRule);
-  const [selectedOperator, setSelectedOperator] = useState(info.operator);
-  const [condition, setCondition] = useState(info.condition);
-  const [selectedRequire, setSelectedRequire] = useState(info.result);
+  const [selectedRule, setSelectedRule] = useState(information.selectedRule);
+  const [selectedOperator, setSelectedOperator] = useState(
+    information.operator
+  );
+  const [condition, setCondition] = useState(information.condition);
+  const [selectedRequire, setSelectedRequire] = useState(information.result);
 
   // hooks for validation and toggling dialogs
   const [open, setOpen] = useState(showDialog);

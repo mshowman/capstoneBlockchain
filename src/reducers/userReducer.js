@@ -22,8 +22,11 @@ export default (state, action) => {
     //     ...action.updatedInfo
     //   };
     case "GET_USER_INFO":
-      return action.role === 0 ? {...state, ...mockAuthUser} : {...state, ...mockAuthAdminUser};
+      return action.role === 0
+        ? { ...state, ...mockAuthUser }
+        : { ...state, ...mockAuthAdminUser };
     case "RESET_USER_INFO":
+      return { id: 0, role: "", userFullName: "" };
     default:
       return state;
   }

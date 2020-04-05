@@ -36,7 +36,7 @@ const RuleView = props => {
         {context.rules.length > 0 &&
           // eslint-disable-next-line react/no-array-index-key
           context.rules.map((rule, i) => (
-            <SavedRule key={i} id={rule.id} info={rule} />
+            <SavedRule key={i} id={rule.id} info={rule.rule} />
           ))}
         <div className={classes.addRule}>
           <Button
@@ -49,7 +49,7 @@ const RuleView = props => {
           </Button>
         </div>
       </div>
-      {showDialog && <RuleDialog showDialog closeDialog={newDialog} />}
+      {showDialog && <RuleDialog showDialog newRule closeDialog={newDialog} />}
     </>
   );
 };
